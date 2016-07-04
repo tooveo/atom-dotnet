@@ -25,10 +25,10 @@ namespace ironsource {
 		/// </param> 
 		/// <param name="headers">
 		/// <see cref="Dictionary<string, string>"/> for sending headers.
-		/// </param> 
-		/// <param name="callback">
-		/// <see cref="Action<Response>"/> for get response data.
-		/// </param>        
+		/// </param>     
+		/// <param name="isDebug">
+		/// <see cref="bool"/> print debug information.
+		/// </param>     
 		public Request(string url, string data, Dictionary<string, string> headers, bool isDebug = false) {
 			url_ = url;
 			data_ = data;
@@ -58,6 +58,21 @@ namespace ironsource {
 			return ReadResponse(responseTuple.Item1, responseTuple.Item2);
 		}
 
+		/// <summary>
+		/// Sends the request.
+		/// </summary>
+		/// <returns>
+		/// <see cref="Tuple<HttpWebResponse, WebException>"/> response from server.
+		/// </returns>
+		/// <param name="type">
+		/// <see cref="bool"/> type of request ("POST"/"GET").
+		/// </param>
+		/// <param name="url">
+		/// <see cref="bool"/> server url.
+		/// </param>
+		/// <param name="data">
+		/// <see cref="string"/> send data.
+		/// </param>
 		private Tuple<HttpWebResponse, WebException> sendRequest(string type, string url, string data = null) {
 			HttpWebResponse response = null;
 			WebException responseException = null;
@@ -91,9 +106,15 @@ namespace ironsource {
 		/// <summary>
 		/// Read response from HttpWebResponse object
 		/// </summary>
+		/// <returns>
+		/// <see cref="Response"/> response from server.
+		/// </returns>
 		/// <param name="response">
 		/// <see cref="HttpWebResponse"/> object with response information.
 		/// </param>    
+		/// <param name="exception">
+		/// <see cref="WebException"/> exception object.
+		/// </param>  
 		private Response ReadResponse(HttpWebResponse response, WebException exception = null) {
 			string responseData = null;
 
@@ -121,6 +142,12 @@ namespace ironsource {
 			return new Response(error, data, status);
 		}
 
+		/// <summary>
+		/// Prints the log.
+		/// </summary>
+		/// <param name="data">
+		/// <see cref="string"/> print debug data.
+		/// </param>
 		protected void printLog(string data) {
 			Debug.WriteLineIf(isDebug_, data);
 		}

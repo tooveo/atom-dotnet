@@ -19,9 +19,6 @@ namespace ironsource {
 		/// <summary>
 		/// API constructor
 		/// </summary>
-		/// <param name="gameObject">
-		/// <see cref="GameObject"/> for coroutine method call.
-		/// </param>
 		public IronSourceAtom() {
 			initHeaders();
 		}
@@ -91,9 +88,6 @@ namespace ironsource {
 		/// <param name="method">
 		/// <see cref="HttpMethod"/> for POST or GET method for do request
 		/// </param>
-		/// <param name="callback">
-		/// <see cref="string"/> for response data
-		/// </param>
 		public Response PutEvent(string stream, string data, HttpMethod method = HttpMethod.POST) {
 			string jsonEvent = GetRequestData(stream, data);
 			return SendEvent(endpoint_, method, headers_, jsonEvent);
@@ -110,9 +104,6 @@ namespace ironsource {
 		/// </param>
 		/// <param name="method">
 		/// <see cref="HttpMethod"/> for type of request
-		/// </param>
-		/// <param name="callback">
-		/// <see cref="Action<Response>"/> for reponse data
 		/// </param>
 		public Response PutEvents(string stream, List<string> data) {            
 			string json = Utils.ListToJson(data);
