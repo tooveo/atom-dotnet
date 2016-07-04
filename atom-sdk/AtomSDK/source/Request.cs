@@ -44,7 +44,8 @@ namespace ironsource {
 			string url = url_ + "?data=" + Utils.Base64Encode(data_);
 			printLog("Request URL: " + url);
 
-			return ReadResponse(sendRequest("GET", url));
+			var responseTuple = sendRequest("GET", url);
+			return ReadResponse(responseTuple.Item1, responseTuple.Item2);
 		}
 
 		/// <summary>
@@ -52,11 +53,14 @@ namespace ironsource {
 		/// </summary>
 		public Response Post() {
 			printLog("Request URL: " + url_);
-			return ReadResponse(sendRequest("POST", url_, data_));
+
+			var responseTuple = sendRequest("POST", url_, data_);
+			return ReadResponse(responseTuple.Item1, responseTuple.Item2);
 		}
 
-		private HttpWebResponse sendRequest(string type, string url, string data = null) {
-			HttpWebResponse response;
+		private Tuple<HttpWebResponse, WebException> sendRequest(string type, string url, string data = null) {
+			HttpWebResponse response = null;
+			WebException responseException = null;
 			try {
 				HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
 				request.Method = type;
@@ -77,10 +81,11 @@ namespace ironsource {
 				response = (HttpWebResponse)request.GetResponse();
 			} catch (WebException exception) {
 				// if error evaluate
+				responseException = exception;
 				response = (HttpWebResponse)exception.Response;
 			}
 
-			return response;
+			return new Tuple<HttpWebResponse, WebException>(response, responseException);
 		}
 
 		/// <summary>
@@ -89,23 +94,31 @@ namespace ironsource {
 		/// <param name="response">
 		/// <see cref="HttpWebResponse"/> object with response information.
 		/// </param>    
-		private Response ReadResponse(HttpWebResponse response) {
+		private Response ReadResponse(HttpWebResponse response, WebException exception = null) {
 			string responseData = null;
-			using (var reader = new StreamReader(response.GetResponseStream())) {
-				responseData = reader.ReadToEnd();
-			}
 
 			string data = null;
 			string error = null;
-			int status = (int)response.StatusCode;
+			int status = -1;
 
-			if (response.StatusCode != HttpStatusCode.OK) {
-				error = responseData;
+			if (response == null) {
+				status = (int)exception.Status;
+				error = exception.Status.ToString();
 			} else {
-				data = responseData;
+				using (var reader = new StreamReader(response.GetResponseStream())) {
+					responseData = reader.ReadToEnd();
+				}
+
+				status = (int)response.StatusCode;
+
+				if (response.StatusCode != HttpStatusCode.OK) {
+					error = responseData;
+				} else {
+					data = responseData;
+				}
 			}
 
-			return new Response(error, data, 200);
+			return new Response(error, data, status);
 		}
 
 		protected void printLog(string data) {

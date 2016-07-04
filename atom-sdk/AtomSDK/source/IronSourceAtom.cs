@@ -9,7 +9,7 @@ namespace ironsource {
 	public class IronSourceAtom {
 		protected static string API_VERSION_ = "V1.0.0";
 
-		protected string endpoint_ = "https://track.atom-data.io/";
+		protected string endpoint_ = "http://track.atom-data.io/";
 		protected string authKey_ = "";
 
 		protected Dictionary<string, string> headers_ = new Dictionary<string, string>();
@@ -94,9 +94,9 @@ namespace ironsource {
 		/// <param name="callback">
 		/// <see cref="string"/> for response data
 		/// </param>
-		public void PutEvent(string stream, string data, HttpMethod method = HttpMethod.POST) {
+		public Response PutEvent(string stream, string data, HttpMethod method = HttpMethod.POST) {
 			string jsonEvent = GetRequestData(stream, data);
-			SendEvent(endpoint_, method, headers_, jsonEvent);
+			return SendEvent(endpoint_, method, headers_, jsonEvent);
 		}
 
 		/// <summary>
