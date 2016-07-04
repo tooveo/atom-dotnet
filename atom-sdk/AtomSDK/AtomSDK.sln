@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtomSDK", "AtomSDK\AtomSDK.csproj", "{61B250B0-9351-4BBB-9139-7C36BFCECE92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtomSDKExample", "..\AtomSDKExample\AtomSDKExample.csproj", "{D1B376B7-1610-4BE5-8B2C-98C7B6688552}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
