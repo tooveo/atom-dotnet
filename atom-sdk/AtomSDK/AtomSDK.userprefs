@@ -1,12 +1,6 @@
 ﻿<Properties StartupItem="../AtomSDKExample/AtomSDKExample.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../AtomSDKExample/Program.cs">
-    <Files>
-      <File FileName="../AtomSDKExample/Program.cs" Line="47" Column="61" />
-      <File FileName="source/IronSourceAtom.cs" Line="67" Column="3" />
-      <File FileName="source/Request.cs" Line="62" Column="35" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

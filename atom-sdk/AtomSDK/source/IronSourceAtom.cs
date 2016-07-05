@@ -37,7 +37,7 @@ namespace ironsource {
 		/// Inits the headers.
 		/// </summary>
 		protected virtual void initHeaders() {            
-			headers_.Add("x-ironsource-atom-sdk-type", "unity");
+			headers_.Add("x-ironsource-atom-sdk-type", "dotnet");
 			headers_.Add("x-ironsource-atom-sdk-version", IronSourceAtom.API_VERSION_);
 		}
 
@@ -45,7 +45,7 @@ namespace ironsource {
 		/// Prints the log.
 		/// </summary>
 		/// <param name="logData">Log data.</param>
-		protected void printLog(string logData) {			
+		protected void PrintLog(string logData) {			
 			Debug.WriteLineIf(isDebug_, logData);
 		}
 
@@ -74,7 +74,6 @@ namespace ironsource {
 		public void SetEndpoint(string endpoint) {
 			endpoint_ = endpoint;
 		}
-
 
 		/// <summary>
 		/// Send single data to Atom server.
@@ -112,7 +111,7 @@ namespace ironsource {
 
 		public Response PutEvents(string stream, string data) {
 			HttpMethod method = HttpMethod.POST;
-			printLog("Key: " + authKey_);
+			PrintLog("Key: " + authKey_);
 
 			string jsonEvent = GetRequestData(stream, data);
 
@@ -138,7 +137,7 @@ namespace ironsource {
 			eventObject["auth"] = hash;
 			string jsonEvent = Utils.DictionaryToJson(eventObject);
 
-			printLog("Request body: " + jsonEvent);
+			PrintLog("Request body: " + jsonEvent);
 
 			return jsonEvent;
 		}
