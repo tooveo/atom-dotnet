@@ -61,8 +61,15 @@ namespace ironsource {
 		/// <param name="authKey">
 		/// <see cref="string"/> for secret key of stream.
 		/// </param>
-		public virtual void SetAuth(string authKey) {
+		public void SetAuth(string authKey) {
 			authKey_ = authKey;
+		}
+
+		/// <summary>
+		/// Gets the auth.
+		/// </summary>
+		public string GetAuth() {
+			return authKey_;
 		}
 
 		/// <summary>
@@ -87,8 +94,13 @@ namespace ironsource {
 		/// <param name="method">
 		/// <see cref="HttpMethod"/> for POST or GET method for do request
 		/// </param>
-		public Response PutEvent(string stream, string data, HttpMethod method = HttpMethod.POST) {
-			string jsonEvent = GetRequestData(stream, data);
+		public Response PutEvent(string stream, string data, HttpMethod method = HttpMethod.POST,
+								 string authKey = "") {
+			if (authKey.Length == 0) {
+				authKey = authKey_;
+			}
+
+			string jsonEvent = GetRequestData(stream, data, authKey);
 			return SendEvent(endpoint_, method, headers_, jsonEvent);
 		}
 
@@ -104,16 +116,21 @@ namespace ironsource {
 		/// <param name="method">
 		/// <see cref="HttpMethod"/> for type of request
 		/// </param>
-		public Response PutEvents(string stream, List<string> data) {            
+		public Response PutEvents(string stream, List<string> data,
+			                      string authKey = "") {            
 			string json = Utils.ListToJson(data);
-			return PutEvents(stream, json);
+			return PutEvents(stream, json, authKey);
 		}
 
-		public Response PutEvents(string stream, string data) {
+		public Response PutEvents(string stream, string data, string authKey) {
+			if (authKey.Length == 0) {
+				authKey = authKey_;
+			}
+
 			HttpMethod method = HttpMethod.POST;
 			PrintLog("Key: " + authKey_);
 
-			string jsonEvent = GetRequestData(stream, data);
+			string jsonEvent = GetRequestData(stream, data, authKey);
 
 			return SendEvent(endpoint_ + "bulk", method, headers_, jsonEvent);
 		}
@@ -128,8 +145,8 @@ namespace ironsource {
 		/// <param name="data">
 		/// <see cref="string"/> for request data
 		/// </param>
-		protected string GetRequestData(string stream, string data) {
-			string hash = Utils.EncodeHmac(data, Encoding.ASCII.GetBytes(authKey_));
+		protected string GetRequestData(string stream, string data, string authKey) {
+			string hash = Utils.EncodeHmac(data, Encoding.ASCII.GetBytes(authKey));
 
 			var eventObject = new Dictionary<string, string>();
 			eventObject ["table"] = stream;

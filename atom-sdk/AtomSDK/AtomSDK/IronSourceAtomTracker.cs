@@ -1,6 +1,9 @@
 ﻿using System;
-
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Text;
 
 namespace ironsource {
 	public class IronSourceAtomTracker {
@@ -11,18 +14,38 @@ namespace ironsource {
 		private IronSourceAtom api_;
 
 		private bool isDebug_;
+		private bool isFlushData_;
+
+
+		private bool isRunWorker_ = true;
+		private Thread eventWorkerThread_;
+
+		private Dictionary<string, string> streamData_;
+		private Dictionary<string, ConcurrentQueue<Event>> events_;
+
+		private EventTaskPool eventPool_;
 
 		/// <summary>
 		/// API Tracker constructor
 		/// </summary>
 		public IronSourceAtomTracker() {
 			api_ = new IronSourceAtom();
+			eventPool_ = new EventTaskPool(2, 2);
+
+			events_ = new Dictionary<string, ConcurrentQueue<Event>>();
+			streamData_ = new Dictionary<string, string>();
+
+			ThreadStart threadMethodHolder = new ThreadStart(this.EventWorker);
+			Thread eventWorkerThread_ = new Thread(threadMethodHolder);
+			eventWorkerThread_.Start();
 		}
 
 		/// <summary>
 		/// API destructor - clear craeted IronSourceCoroutineHandler
 		/// </summary>       
 		~IronSourceAtomTracker() {
+			isRunWorker_ = false;
+			eventWorkerThread_.Join();
 		}
 
 		/// <summary>
@@ -94,16 +117,90 @@ namespace ironsource {
 		/// <param name="data">
 		/// <see cref="string"/> Info for sending
 		/// </param>
-		/// <param name="token">
+		/// <param name="authKey">
 		/// <see cref="string"/> Secret token for stream
 		/// </param>
-		public void track(string stream, string data, string token = "") {
+		public void track(string stream, string data, string authKey = "") {
+			if (authKey.Length == 0) {
+				authKey = api_.GetAuth();
+			}
+			//new tread
+			// mutex on
+			if (!streamData_.ContainsKey(stream)) {
+				streamData_.Add(stream, authKey);
+			}
+
+			if (!events_.ContainsKey(stream)) {
+				events_.Add(stream, new ConcurrentQueue<Event>());
+			}
+
+			events_[stream].Enqueue(new Event(stream, data));
 		}
 
 		/// <summary>
 		/// Flush all data to server
 		/// </summary>
 		public void flush() {
+			
+		}
+
+		private void EventWorker() {
+			Dictionary<string, List<string>> eventsBuffer = new Dictionary<string, List<string>>();
+			Dictionary<string, int> eventsSize = new Dictionary<string, int>();
+
+			Action<string, string, List<string>> flushEvent = delegate(string stream, 
+																	   string authKey, 
+																	   List<string> events) {
+				List<string> buffer = new List<string>(events);
+				events.Clear();
+				eventsSize[stream] = 0;
+
+
+				eventPool_.addEvent(delegate() {
+					flushData(stream, authKey, buffer);
+				});
+			};
+
+			while (isRunWorker_) {
+				foreach (var entry in events_) {
+					Event eventObject;
+					if (!entry.Value.TryDequeue(out eventObject)) {
+						continue;
+					}
+					eventsSize[entry.Key] += ASCIIEncoding.Unicode.GetByteCount(eventObject.data_);
+					eventsBuffer[entry.Key].Add(eventObject.data_);
+
+					if (eventsSize[entry.Key] >= bulkBytesSize_) {
+						flushEvent(entry.Key, streamData_ [entry.Key], eventsBuffer [entry.Key]);
+					}
+
+					if (eventsBuffer[entry.Key].Count >= bulkSize_) {
+						flushEvent(entry.Key, streamData_[entry.Key], eventsBuffer [entry.Key]);
+					}
+
+					if (isFlushData_) {
+						flushEvent(entry.Key, streamData_[entry.Key], eventsBuffer [entry.Key]);
+					}
+				}
+
+				if (isFlushData_) {
+					isFlushData_ = false;
+				}
+			}
+		}
+
+		private void flushData(string stream, string authKey, List<string> data) {
+			// data str 
+			// send data
+			while (true) {
+				Response response = api_.PutEvents (stream, data, authKey);
+				if (response.status < 500) {
+					break;
+				}
+
+				// jitter - random dt
+				// sleep
+			}
 		}
 
 		/// <summary>

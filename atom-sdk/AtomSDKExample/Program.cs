@@ -10,12 +10,16 @@ namespace AtomSDKExample {
 			IronSourceAtom api = new IronSourceAtom();
 			api.EnableDebug (true);
 
+
+			IronSourceAtomTracker tracker = new IronSourceAtomTracker();
+			tracker.EnableDebug(true);
+			tracker.track("", "");
+
 			// example put event "GET"
 			string streamGet = "sdkdev_sdkdev.public.g8y3etest";
 			string dataGet = "{\"strings\": \"data GET\"}";
 
-			api.SetAuth("I40iwPPOsG3dfWX30labriCg9HqMfL");
-			Response responseGet = api.PutEvent(streamGet, dataGet, HttpMethod.GET);
+			Response responseGet = api.PutEvent(streamGet, dataGet, HttpMethod.GET, "I40iwPPOsG3dfWX30labriCg9HqMfL");
 
 			Console.WriteLine("GET data: " + responseGet.data);
 			Console.WriteLine("GET error: " + responseGet.error);
@@ -25,7 +29,7 @@ namespace AtomSDKExample {
 			string streamPost = "sdkdev_sdkdev.public.g8y3etest";
 			string dataPost = "{\"strings\": \"data POST\"}";
 
-			api.SetAuth("I40iwPPOsG3dfWX30labriCg9HqMfL");
+			//api.SetAuth("I40iwPPOsG3dfWX30labriCg9HqMfL");
 			Response responsePost = api.PutEvent(streamPost, dataPost);
 
 			Console.WriteLine("POST data: " + responsePost.data);
@@ -39,7 +43,7 @@ namespace AtomSDKExample {
 			dataBulk.Add("{\"strings\": \"test BULK 2\"}");
 			dataBulk.Add("{\"strings\": \"test BULK 3\"}");
 
-			api.SetAuth("I40iwPPOsG3dfWX30labriCg9HqMfL");
+			//api.SetAuth("I40iwPPOsG3dfWX30labriCg9HqMfL");
 			Response responseBulk = api.PutEvents(streamBulk, dataBulk);
 
 			Console.WriteLine("Bulk data: " + responseBulk.data);
