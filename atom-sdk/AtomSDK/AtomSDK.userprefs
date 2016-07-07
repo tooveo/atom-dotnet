@@ -1,11 +1,8 @@
 ﻿<Properties StartupItem="../AtomSDKExample/AtomSDKExample.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AtomSDK/IronSourceAtomTracker.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="source/IronSourceAtom.cs">
     <Files>
-      <File FileName="source/IronSourceAtom.cs" Line="1" Column="1" />
-      <File FileName="AtomSDK/IronSourceAtomTracker.cs" Line="152" Column="46" />
-      <File FileName="AtomSDK/Event.cs" Line="1" Column="1" />
-      <File FileName="AtomSDK/ThreadPool.cs" Line="1" Column="1" />
+      <File FileName="source/IronSourceAtom.cs" Line="82" Column="4" />
       <File FileName="../AtomSDKExample/Program.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

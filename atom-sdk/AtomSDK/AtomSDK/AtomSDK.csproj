@@ -8,6 +8,8 @@
     <RootNamespace>AtomSDK</RootNamespace>
     <AssemblyName>AtomSDK</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,9 +49,15 @@
     <Compile Include="..\source\Utils.cs">
       <Link>Utils.cs</Link>
     </Compile>
-    <Compile Include="IronSourceAtomTracker.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="EventTaskPool.cs" />
+    <Compile Include="..\source\Event.cs">
+      <Link>Event.cs</Link>
+    </Compile>
+    <Compile Include="..\source\EventTaskPool.cs">
+      <Link>EventTaskPool.cs</Link>
+    </Compile>
+    <Compile Include="..\source\IronSourceAtomTracker.cs">
+      <Link>IronSourceAtomTracker.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

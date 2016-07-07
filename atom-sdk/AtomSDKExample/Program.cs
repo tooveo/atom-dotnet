@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using System.Threading;
+
 using ironsource;
 
 namespace AtomSDKExample {
@@ -13,8 +15,18 @@ namespace AtomSDKExample {
 
 			IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 			tracker.EnableDebug(true);
-			tracker.track("", "");
+			// test for bulk size
+			tracker.SetBulkBytesSize(20);
 
+			int index = 0;
+			while (true) {
+				tracker.track("sdkdev_sdkdev.public.g8y3etest", "{\"strings\": \"data GET\"}");
+				Thread.Sleep(3000);
+				++index;
+				Console.WriteLine("Iteration number: " + index);
+			}
+
+			/*
 			// example put event "GET"
 			string streamGet = "sdkdev_sdkdev.public.g8y3etest";
 			string dataGet = "{\"strings\": \"data GET\"}";
@@ -51,6 +63,7 @@ namespace AtomSDKExample {
 			Console.WriteLine("Bulk status: " + responseBulk.status);
 
 			Console.WriteLine("End of the example!;");
+			*/
 		}
 	}
 }

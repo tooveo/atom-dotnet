@@ -141,7 +141,7 @@ namespace ironsource {
 		/// Flush all data to server
 		/// </summary>
 		public void flush() {
-			
+			isFlushData_ = true;
 		}
 
 		private void EventWorker() {
@@ -153,6 +153,8 @@ namespace ironsource {
 																	   List<string> events) {
 				List<string> buffer = new List<string>(events);
 				events.Clear();
+
+				eventsBuffer = eventsBuffer;
 				eventsSize[stream] = 0;
 
 
@@ -165,21 +167,31 @@ namespace ironsource {
 				foreach (var entry in events_) {
 					Event eventObject;
 					if (!entry.Value.TryDequeue(out eventObject)) {
+						Thread.Sleep(25);
 						continue;
 					}
+
+					if (!eventsSize.ContainsKey(entry.Key)) {
+						eventsSize.Add(entry.Key, 0);
+					}
+
+					if (!eventsBuffer.ContainsKey(entry.Key)) {
+						eventsBuffer.Add(entry.Key, new List<string>());
+					}
+
 					eventsSize[entry.Key] += ASCIIEncoding.Unicode.GetByteCount(eventObject.data_);
 					eventsBuffer[entry.Key].Add(eventObject.data_);
 
 					if (eventsSize[entry.Key] >= bulkBytesSize_) {
-						flushEvent(entry.Key, streamData_ [entry.Key], eventsBuffer [entry.Key]);
+						flushEvent(entry.Key, streamData_ [entry.Key], eventsBuffer[entry.Key]);
 					}
 
 					if (eventsBuffer[entry.Key].Count >= bulkSize_) {
-						flushEvent(entry.Key, streamData_[entry.Key], eventsBuffer [entry.Key]);
+						flushEvent(entry.Key, streamData_[entry.Key], eventsBuffer[entry.Key]);
 					}
 
 					if (isFlushData_) {
-						flushEvent(entry.Key, streamData_[entry.Key], eventsBuffer [entry.Key]);
+						flushEvent(entry.Key, streamData_[entry.Key], eventsBuffer[entry.Key]);
 					}
 				}
 
@@ -194,12 +206,16 @@ namespace ironsource {
 			// send data
 			while (true) {
 				Response response = api_.PutEvents (stream, data, authKey);
+
+				PrintLog ("Response code: " + response.status + "\nbody: " + response.data + "\nerror: " + 
+						  response.error);
 				if (response.status < 500) {
 					break;
 				}
 
-				// jitter - random dt
-				// sleep
+				Thread.Sleep (1000);
+
+				PrintLog ("Retry request: " + data);
 			}
 		}
 

@@ -21,8 +21,11 @@ namespace ironsource {
 			workers_ = new List<Thread>();
 			ThreadStart threadMethodHolder = new ThreadStart(this.TaskWorker);
 
-			for (int index = 0; index < maxThreads; ++index) {				
-				workers_.Add(new Thread(threadMethodHolder));
+			for (int index = 0; index < maxThreads; ++index) {
+				Thread workerThread = new Thread(threadMethodHolder);
+				workers_.Add(workerThread);
+
+				workerThread.Start();
 			}
 		}
 
@@ -39,7 +42,10 @@ namespace ironsource {
 				Action eventAction;
 				if (!events_.TryDequeue(out eventAction)) {
 					Thread.Sleep(25);
+					continue;
 				}
+
+				eventAction();
 			}
 		}
 
