@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using System.Threading;
 
 using ironsource;
@@ -19,12 +19,36 @@ namespace AtomSDKExample {
 			tracker.SetBulkBytesSize(20);
 
 			int index = 0;
-			while (true) {
-				tracker.track("sdkdev_sdkdev.public.g8y3etest", "{\"strings\": \"data GET\"}");
-				Thread.Sleep(3000);
-				++index;
-				Console.WriteLine("Iteration number: " + index);
+
+			int eventSended = 0;
+			bool isRunThreads = true;
+			for (int i = 0; i < 5; ++i) {
+				int threadIndex = i;
+
+				Action eventSend = delegate() {
+					while (isRunThreads) {
+						string data = "{\"strings\": \"zzzz d: " + Interlocked.Increment(ref index) + 
+						" t: " + threadIndex + "\"}";
+
+						Debug.WriteLine("Send: " + data);
+
+						tracker.track("sdkdev_sdkdev.public.g8y3etest", data, "I40iwPPOsG3dfWX30labriCg9HqMfL");
+
+						if (Interlocked.Increment(ref eventSended) >= 30) {
+							isRunThreads = false;
+						}
+
+						Thread.Sleep (3000);
+					}
+				};
+
+				ThreadStart threadMethodHolder = new ThreadStart(eventSend);
+				Thread thread = new Thread(threadMethodHolder);
+
+				thread.Start();
 			}
+
+			Thread.Sleep (30000);
 
 			/*
 			// example put event "GET"

@@ -1,7 +1,7 @@
 ﻿namespace ironsource {
-	public enum HttpMethod {
-		GET,
-		POST
-	}
+    public enum HttpMethod {
+        GET,
+        POST
+    }
 }
 
