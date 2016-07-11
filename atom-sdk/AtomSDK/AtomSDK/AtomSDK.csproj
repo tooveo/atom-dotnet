@@ -58,8 +58,12 @@
     <Compile Include="..\source\IronSourceAtomTracker.cs">
       <Link>IronSourceAtomTracker.cs</Link>
     </Compile>
-    <Compile Include="IEventManager.cs" />
-    <Compile Include="QueueEventManager.cs" />
+    <Compile Include="..\source\IEventManager.cs">
+      <Link>IEventManager.cs</Link>
+    </Compile>
+    <Compile Include="..\source\QueueEventManager.cs">
+      <Link>QueueEventManager.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
