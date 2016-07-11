@@ -1,11 +1,21 @@
 ﻿<Properties StartupItem="../AtomSDKExample/AtomSDKExample.csproj">
   <MonoDevelop.Ide.ItemProperties.AtomSDKExample PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../AtomSDKExample/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="source/Event.cs">
     <Files>
-      <File FileName="../AtomSDKExample/Program.cs" Line="56" Column="12" />
-      <File FileName="AtomSDK/QueueEventManager.cs" Line="27" Column="13" />
-      <File FileName="source/IronSourceAtomTracker.cs" Line="186" Column="1" />
+      <File FileName="../AtomSDKExample/Program.cs" Line="30" Column="28" />
+      <File FileName="source/IronSourceAtomTracker.cs" Line="244" Column="36" />
+      <File FileName="source/Event.cs" Line="5" Column="21" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="AtomSDK" expanded="True" selected="True">
+            <Node name="AtomSDK" expanded="True" />
+            <Node name="AtomSDKExample" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
