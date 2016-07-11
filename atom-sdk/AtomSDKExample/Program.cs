@@ -16,7 +16,8 @@ namespace AtomSDKExample {
 			IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 			tracker.EnableDebug(true);
 			// test for bulk size
-			tracker.SetBulkBytesSize(20);
+			tracker.SetBulkBytesSize(2);
+			tracker.SetFlushInterval(2000);
 
 			int index = 0;
 
@@ -27,7 +28,7 @@ namespace AtomSDKExample {
 
 				Action eventSend = delegate() {
 					while (isRunThreads) {
-						string data = "{\"strings\": \"zzzz d: " + Interlocked.Increment(ref index) + 
+						string data = "{\"strings\": \"aaaa d: " + Interlocked.Increment(ref index) + 
 						" t: " + threadIndex + "\"}";
 
 						Debug.WriteLine("Send: " + data);

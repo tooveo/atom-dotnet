@@ -6,6 +6,7 @@ namespace ironsource {
     public class Event {
         public string data_;
         public string stream_;
+        public string authKey_;
 
         /// <summary>
         /// Batch contructor
@@ -16,9 +17,10 @@ namespace ironsource {
         /// <param name="data">
         /// <see cref="string"/> data for server.
         /// </param>
-        public Event(string stream, string data) {
+        public Event(string stream, string data, string authKey) {
             stream_ = stream;
             data_ = data;
+            authKey_ = authKey;
         }
     }
 }

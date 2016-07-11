@@ -14,6 +14,11 @@ namespace ironsource {
 
         private int maxEvents_;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ironsource.EventTaskPool"/> class.
+        /// </summary>
+        /// <param name="maxThreads">Max threads.</param>
+        /// <param name="maxEvents">Max events.</param>
         public EventTaskPool(int maxThreads, int maxEvents) {
             maxEvents_ = maxEvents;
             events_ = new ConcurrentQueue<Action>();
