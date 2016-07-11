@@ -22,7 +22,7 @@ install:
   # return to source directory
   - cd ../../ironSource/atom-dotnet
 
-  script:
+script:
   - export LD_LIBRARY_PATH=/usr/local/lib
   - xbuild /p:Configuration=Release ./atom-sdk/AtomSDK/AtomSDK.sln
   - xbuild /p:Configuration=Release ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
