@@ -1,5 +1,5 @@
 os:
-	- linux
+  - linux
 language: csharp
 sudo: required
 install:
