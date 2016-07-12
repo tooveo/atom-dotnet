@@ -6,6 +6,8 @@ install:
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
   - nuget install xunit.runners -Version  1.9.2  -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
+
+  - chmod +x ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe
   - sudo apt-get install gtk-sharp2
   # install mono cecil
   - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
@@ -30,7 +32,7 @@ script:
   - ls ./testrunner/xunit.runners.1.9.2 
 
  #- mono --profile=monocov:outfile=monocovCoverage.cov,+atom_sdk ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll /noshadow
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
