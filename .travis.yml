@@ -4,7 +4,7 @@ sudo: required
 install:
   - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
-  - nuget install xunit.runners -Version 2.0.0 -OutputDirectory testrunner
+  - nuget install xunit.runners -Version  1.9.2  -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
   - sudo apt-get install gtk-sharp2
   # install mono cecil
@@ -27,10 +27,10 @@ script:
   - xbuild /p:Configuration=Release ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
 
-  - ls ./testrunner/xunit.runners.2.0.0
+  - ls ./testrunner/xunit.runners.1.9.2 
 
  #- mono --profile=monocov:outfile=monocovCoverage.cov,+atom_sdk ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.2.0.0/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
