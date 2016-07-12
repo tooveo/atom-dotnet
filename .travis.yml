@@ -4,7 +4,7 @@ sudo: required
 install:
   - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
-  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+  - nuget install xunit.runners -Version 2.0.0 -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
   - sudo apt-get install gtk-sharp2
   # install mono cecil
