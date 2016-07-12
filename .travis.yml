@@ -6,7 +6,7 @@ sudo: required
 
 install:
   #- sudo apt-get update
-  3- nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
+  #- nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
   - nuget install NUnit.Runners -Version 2.6.3 -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
   - sudo apt-get install gtk-sharp2
