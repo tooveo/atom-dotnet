@@ -1,10 +1,12 @@
 ## Travis CI Integration
-
+os:
+  - linux
 language: csharp
 
 install:
   #- sudo apt-get update
-  - sudo apt-get install nunit-console
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
   - sudo apt-get install gtk-sharp2
   - mono --version
   - xbuild /version
@@ -24,8 +26,10 @@ install:
   - cd ../../ironSource/atom-dotnet
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib
-  - xbuild ./atom-sdk/AtomSDK/atom_sdk.sln
-  - mono --profile=monocov:+[AtomSDK],+[AtomSDKTests] nunit-console ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
+  - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
+  - cp ./atom-sdk/AtomSDK/obj/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
+
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
