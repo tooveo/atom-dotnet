@@ -1,11 +1,17 @@
 language: csharp
 
 env:
-  global:
-        # COVERITY_SCAN_TOKEN
-    # ** specific to your project **
+  global:    
     - secure: "i5tmEo3wOvxB/nMq60T3p3jbb/tVdoiF/x13M2Ixq3gbEEzZl+dDT2Dc/JcDNZHoi9GcQG7e9kiffgaER5oeZqs8UunA5mMOQ8leiYi6vo108haRadZUWRiav4Voa4CJV+GPmfLMTjLCu7qZO3FjvTI4igHM3WGvVsve+mhSzFqoXkMV8Ya3xu246w7LuQIkWU/el14q5tJUuZxWDUQ/Ux4d1y99Xae/il5qm7DWqc5pgqhb6NI46YsDQ1DT61lIW2U1A8tqQFpElKrmtQ1jq7YiA21d1C+e2wbZsLeImhOochcK0JR9uQQn1mgJq/9L2KzkzGP8zAx0aDw6HROAvph9DA4LQemoVRva8HFfYTSWNxdWjBZ1JFjbvxKGCxNCxZY2pCaxA8USU0NDgSYRcMXSM7CY64SVqINzyQkOfd6j2BsASZQGNzjP5h+RLlCs9fviXjAKUHxkG1yVWCknk1RcuiXLVTF5iOAlu3yPaoo+DjA7EcAroGKshWn2pWwd1ramO+Wp2L+UOrhN/v2ckNUX1A2DPyFHYoLKBBslT1/ilTkD3wfiouCYVVrHOJ/vj+d3c3m2MGAZZuPGvHPyNu5RspwxD14tnMqs4DdjjMlCNt2XbHElFvL4qrS13Ubx3VIHvWeCPfH6NJoIi0Fv86Fgqqac36j+LPSCRHlMFCA="
-
+addons:
+  coverity_scan:
+    project:
+      name: "atom-dotnet"
+      description: "Build submitted via Travis CI"
+    notification_email: valentine.pavchuk@ironsrc.com
+    build_command_prepend: "xbuild /t:CleanAll travis.proj"
+    build_command:   "xbuild /t:Build travis.proj"
+    branch_pattern: coverity_scan
 #git:
 #  # we need recursive init
 #  submodules: false
@@ -16,17 +22,6 @@ env:
 #
 #script:
 #  - xbuild ./atom-sdk/AtomSDK/atom_sdk.sln /p:Configuration="Release"
-
-addons:
-  coverity_scan:
-    project:
-      name: "atom-dotnet"
-      description: "Build submitted via Travis CI"
-    notification_email: valentine.pavchuk@ironsrc.com
-    build_command_prepend: "xbuild /t:CleanAll travis.proj"
-    build_command:   "xbuild /t:Build travis.proj"
-    branch_pattern: coverity_scan
-
 #os:
 #  - linux
 #language: csharp
@@ -73,4 +68,4 @@ addons:
 
 
 
-  - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
+ # - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
