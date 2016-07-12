@@ -14,6 +14,5 @@ build:
   verbosity: minimal
 test_script:
 - ps: >-
-    cd test/UnitTests
-
+    cd atom-sdk/AtomSDKTests
     k test
