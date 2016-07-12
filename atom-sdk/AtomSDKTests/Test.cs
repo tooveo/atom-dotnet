@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
+
 namespace ironsource {
     [TestFixture]
     public class Test1 {
