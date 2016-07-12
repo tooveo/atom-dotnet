@@ -36,7 +36,9 @@ script:
   - ls ./testrunner/NUnit.Extension.NUnitProjectLoader.3.4.1
 
   #- mono --profile=monocov:outfile=monocovCoverage.cov ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  - mono --profile=monocov:outfile=monocovCoverage.cov ./testrunner/NUnit.Runners.2.6.3/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - cd ./atom-sdk/AtomSDKTests/bin/Release/
+  - mono ../../../../testrunner/NUnit.Runners.2.6.3/tools/nunit-console.exe AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
