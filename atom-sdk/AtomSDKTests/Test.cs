@@ -1,26 +1,31 @@
 ﻿using NUnit.Framework;
 
 namespace ironsource {
-    [TestFixture]
-    public class Test1 {
-        [Test]
-        public void TestCase1() {
-            //ironsource.IronSourceAtomTracker tracker = new ironsource.IronSourceAtomTracker();
+    namespace test {
+        [TestFixture]
+        public class Test1
+        {
+            [Test]
+            public void TestCase1 ()
+            {
+                //ironsource.IronSourceAtomTracker tracker = new ironsource.IronSourceAtomTracker();
 
 
-            long currentTimer  = Utils.GetCurrentMilliseconds ();
+                long currentTimer = Utils.GetCurrentMilliseconds ();
 
-            //Assert.True(false);
-        }
+                //Assert.True(false);
+            }
 
-        [Test]
-        public void TestCase2() {
-            ironsource.IronSourceAtomTracker tracker = new IronSourceAtomTracker();
+            [Test]
+            public void TestCase2 ()
+            {
+                ironsource.IronSourceAtomTracker tracker = new IronSourceAtomTracker ();
 
 
-            //long currentTimer  = ironsource.Utils.GetCurrentMilliseconds ();
+                //long currentTimer  = ironsource.Utils.GetCurrentMilliseconds ();
 
-            //Assert.True(false);
+                //Assert.True(false);
+            }
         }
     }
 }
