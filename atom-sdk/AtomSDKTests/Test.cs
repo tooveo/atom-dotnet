@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
-namespace AtomSDKTests {
+namespace ironsource {
     [TestFixture]
     public class Test1 {
         [Test]
@@ -8,14 +8,14 @@ namespace AtomSDKTests {
             //ironsource.IronSourceAtomTracker tracker = new ironsource.IronSourceAtomTracker();
 
 
-            long currentTimer  = ironsource.Utils.GetCurrentMilliseconds ();
+            long currentTimer  = Utils.GetCurrentMilliseconds ();
 
             //Assert.True(false);
         }
 
         [Test]
         public void TestCase2() {
-            ironsource.IronSourceAtomTracker tracker = new ironsource.IronSourceAtomTracker();
+            ironsource.IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 
 
             //long currentTimer  = ironsource.Utils.GetCurrentMilliseconds ();
