@@ -25,7 +25,7 @@ install:
 
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib
-  - xbuild /p:Configuration=Debug ./atom-sdk/AtomSDK/atom_sdk.sln
+  - xbuild /p:Configuration=Release ./atom-sdk/AtomSDK/atom_sdk.sln
 
   - ls ./testrunner/NUnit.ConsoleRunner.3.4.1/tools
 
