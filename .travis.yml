@@ -29,7 +29,7 @@ script:
   - export LD_LIBRARY_PATH=/usr/local/lib
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
-  - cp ./atom-sdk/AtomSDK/AtomSDK/obj/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
+  - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
   - ls ./testrunner
 #
   - mono --profile=monocov:outfile=monocovCoverage.cov ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll

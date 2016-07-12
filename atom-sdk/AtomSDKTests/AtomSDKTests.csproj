@@ -33,7 +33,7 @@
       <HintPath>..\..\..\..\..\..\soft\NUnit-2.6.4\bin\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="AtomSDK">
-      <HintPath>..\AtomSDK\AtomSDK\bin\Release\AtomSDK.dll</HintPath>
+      <HintPath>..\AtomSDK\AtomSDK\Temp\bin\Release\AtomSDK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
