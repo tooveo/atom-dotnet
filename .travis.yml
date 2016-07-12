@@ -30,6 +30,7 @@ script:
   - ls ./testrunner/NUnit.ConsoleRunner.3.4.1/tools
 
   - mono --profile=monocov:+[AtomSDK],+[AtomSDKTests] ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
+  - car ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe.cov
  # - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll /noshadow
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
