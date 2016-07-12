@@ -38,13 +38,16 @@ script:
   #- cd ./atom-sdk/AtomSDKTests/bin/Release/
   #- export LD_LIBRARY_PATH=/usr/local/lib
   - export LD_LIBRARY_PATH=/usr/local/lib
+
+  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe
+
   - mono --profile=monocov ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - cat monocovCoverage.cov
   - cd ./atom-sdk/AtomSDKTests/bin/Release/
   - mono --profile=monocov:outfile=monocovCoverage.cov AtomSDKTests.dll
    - cat monocovCoverage.cov
   - mono --profile=monocov:outfile=monocovCoverage.cov ../../../../testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe AtomSDKTests.dll
-  
+
   - cat monocovCoverage.cov
   - MONO_OPTIONS="--profile=monocov:outfile=monocovCoverage.cov,+AtomSDK" nunit-console AtomSDKTests.dll
  
