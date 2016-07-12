@@ -31,8 +31,9 @@ script:
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
   - ls ./testrunner
+  - ls /usr/lib/cli/
 #
-  - mono --profile=monocov:outfile=monocovCoverage.cov ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
