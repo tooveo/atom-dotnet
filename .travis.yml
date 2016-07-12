@@ -2,7 +2,7 @@ language: csharp
 sudo: required
 install:
   - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
-  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
+  - nuget install NUnit.Runners -Version 3.0.0 -OutputDirectory testrunner
   - nuget install xunit.runners -Version  1.9.2  -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
 
@@ -27,9 +27,9 @@ script:
   - export LD_LIBRARY_PATH=/usr/local/lib
   - xbuild /p:Configuration=Debug ./atom-sdk/AtomSDK/atom_sdk.sln
 
-  - ls ./testrunner/NUnit.ConsoleRunner.3.4.1/tools
+  - ls ./testrunner/NUnit.ConsoleRunner.3.0.0/tools
 
-  - mono --profile=monocov:+[AtomSDK],+[AtomSDKTests] ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
+  - mono --profile=monocov:+[AtomSDK],+[AtomSDKTests] ./testrunner/NUnit.ConsoleRunner.3.0.0/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
   - car ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe.cov
  # - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll /noshadow
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
