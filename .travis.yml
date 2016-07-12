@@ -25,11 +25,11 @@ install:
 
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib
-  - xbuild /p:Configuration=Release ./atom-sdk/AtomSDK/atom_sdk.sln
+  - xbuild /p:Configuration=Debug ./atom-sdk/AtomSDK/atom_sdk.sln
 
   - ls ./testrunner/NUnit.ConsoleRunner.3.4.1/tools
 
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK],+[atom_sdk],+ironsource,+[*],+AtomSDK.ironsource ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Debug/AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK],+[atom_sdk],+ironsource,+[*],+AtomSDK.ironsource ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
  # - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll /noshadow
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
