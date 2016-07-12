@@ -44,7 +44,8 @@ script:
   - mono --profile=monocov:outfile=monocovCoverage.cov AtomSDKTests.dll
    - cat monocovCoverage.cov
   - mono --profile=monocov:outfile=monocovCoverage.cov ../../../../testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe AtomSDKTests.dll
- - cat monocovCoverage.cov
+  
+  - cat monocovCoverage.cov
   - MONO_OPTIONS="--profile=monocov:outfile=monocovCoverage.cov,+AtomSDK" nunit-console AtomSDKTests.dll
  
   - cd ../../../../
