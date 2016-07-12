@@ -30,7 +30,6 @@ script:
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
-  - ls ./testrunner
   - ls /usr/lib/cli/
 #
   - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
