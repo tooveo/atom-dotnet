@@ -6,7 +6,7 @@ env:
 addons:
   coverity_scan:
     project:
-      name: "atom-dotnet"
+      name: "atom_sdk"
       description: "Build submitted via Travis CI"
     notification_email: valentine.pavchuk@ironsrc.com
     build_command_prepend: "xbuild /t:CleanAll travis.proj"
