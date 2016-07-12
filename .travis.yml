@@ -1,45 +1,77 @@
-os:
-  - linux
 language: csharp
-sudo: required
-install:
-  - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
-  - nuget install NUnit.Runners -Version 3.0.0 -OutputDirectory testrunner
-  - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
-  - sudo apt-get install gtk-sharp2
-  # install mono cecil
-  - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
-  - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
-  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll .
-  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/
-  # install monocov
-  - git clone --depth=50 git://github.com/csMACnz/monocov.git ../../csMACnz/monocov
-  - cd ../../csMACnz/monocov
-  - cp /tmp/cecil/Mono.Cecil.dll .
-  - ./configure
-  - make
-  - sudo make install
-  # return to source directory
-  - cd ../../ironSource/atom-dotnet
+
+env:
+  global:
+    - EnableNuGetPackageRestore=true
+        # COVERITY_SCAN_TOKEN
+    # ** specific to your project **
+    - secure: "i5tmEo3wOvxB/nMq60T3p3jbb/tVdoiF/x13M2Ixq3gbEEzZl+dDT2Dc/JcDNZHoi9GcQG7e9kiffgaER5oeZqs8UunA5mMOQ8leiYi6vo108haRadZUWRiav4Voa4CJV+GPmfLMTjLCu7qZO3FjvTI4igHM3WGvVsve+mhSzFqoXkMV8Ya3xu246w7LuQIkWU/el14q5tJUuZxWDUQ/Ux4d1y99Xae/il5qm7DWqc5pgqhb6NI46YsDQ1DT61lIW2U1A8tqQFpElKrmtQ1jq7YiA21d1C+e2wbZsLeImhOochcK0JR9uQQn1mgJq/9L2KzkzGP8zAx0aDw6HROAvph9DA4LQemoVRva8HFfYTSWNxdWjBZ1JFjbvxKGCxNCxZY2pCaxA8USU0NDgSYRcMXSM7CY64SVqINzyQkOfd6j2BsASZQGNzjP5h+RLlCs9fviXjAKUHxkG1yVWCknk1RcuiXLVTF5iOAlu3yPaoo+DjA7EcAroGKshWn2pWwd1ramO+Wp2L+UOrhN/v2ckNUX1A2DPyFHYoLKBBslT1/ilTkD3wfiouCYVVrHOJ/vj+d3c3m2MGAZZuPGvHPyNu5RspwxD14tnMqs4DdjjMlCNt2XbHElFvL4qrS13Ubx3VIHvWeCPfH6NJoIi0Fv86Fgqqac36j+LPSCRHlMFCA="
+
+git:
+  # we need recursive init
+  submodules: false
+
+cache: apt
+
+solution: ./atom-sdk/AtomSDK/atom_sdk.sln
 
 script:
-  - export LD_LIBRARY_PATH=/usr/local/lib
-  - xbuild /p:Configuration=Release ./atom-sdk/AtomSDK/atom_sdk.sln
-  - xbuild /p:Configuration=Release ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Console.3.0.0/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  - monocov --export-xml=monocovCoverage monocovCoverage.cov
-  - cat monocovCoverage.cov
-  - ls monocovCoverage
+  - xbuild ./atom-sdk/AtomSDK/atom_sdk.sln /p:Configuration="Release"
 
-  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
-  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
-  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+addons:
+  coverity_scan:
+    project:
+      name: "atom-dotnet"
+      description: "Build submitted via Travis CI"
+    notification_email: valentine.pavchuk@ironsrc.com
+    build_command_prepend: "xbuild /t:CleanAll travis.proj"
+    build_command:   "xbuild /t:Build travis.proj"
+    branch_pattern: coverity_scan
 
-  - echo $TRAVIS_COMMIT
-  - echo $TRAVIS_BRANCH
-  - echo $REPO_COMMIT_AUTHOR
-  - echo $REPO_COMMIT_AUTHOR_EMAIL
-  - echo $REPO_COMMIT_MESSAGE
-  - echo $TRAVIS_JOB_ID
+#os:
+#  - linux
+#language: csharp
+#sudo: required
+#install:
+#  - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
+#  - nuget install NUnit.Runners -Version 3.0.0 -OutputDirectory testrunner
+#  - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
+#  - sudo apt-get install gtk-sharp2
+#  # install mono cecil
+#  - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
+#  - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
+#  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll .
+#  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/
+#  # install monocov
+#  - git clone --depth=50 git://github.com/csMACnz/monocov.git ../../csMACnz/monocov
+#  - cd ../../csMACnz/monocov
+#  - cp /tmp/cecil/Mono.Cecil.dll .
+#  - ./configure
+#  - make
+#  - sudo make install
+#  # return to source directory
+#  - cd ../../ironSource/atom-dotnet
+#
+#script:
+#  - export LD_LIBRARY_PATH=/usr/local/lib
+#  - xbuild /p:Configuration=Release ./atom-sdk/AtomSDK/atom_sdk.sln
+#  - xbuild /p:Configuration=Release ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
+#  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Console.3.0.0/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
+#  - monocov --export-xml=monocovCoverage monocovCoverage.cov
+#  - cat monocovCoverage.cov
+#  - ls monocovCoverage
+#
+#  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
+#  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
+#  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+#
+#  - echo $TRAVIS_COMMIT
+#  - echo $TRAVIS_BRANCH
+#  - echo $REPO_COMMIT_AUTHOR
+#  - echo $REPO_COMMIT_AUTHOR_EMAIL
+#  - echo $REPO_COMMIT_MESSAGE
+#  - echo $TRAVIS_JOB_ID
+
+
 
   - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
