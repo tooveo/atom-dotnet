@@ -5,7 +5,7 @@ language: csharp
 
 install:
   #- sudo apt-get update
-  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
   - sudo apt-get install gtk-sharp2
   - mono --version
@@ -29,10 +29,8 @@ script:
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
   - cp ./atom-sdk/AtomSDK/AtomSDK/obj/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
   - ls ./testrunner
-  - ls ./testrunner/NUnit.ConsoleRunners.3.4.1/
-  - ls ./testrunner/NUnit.ConsoleRunner.3.4.1/
 
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage

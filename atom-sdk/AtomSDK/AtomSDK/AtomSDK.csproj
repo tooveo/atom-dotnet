@@ -7,8 +7,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AtomSDK</RootNamespace>
     <AssemblyName>AtomSDK</AssemblyName>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,7 +69,7 @@
         <Policies>
           <TextStylePolicy inheritsSet="Mono" inheritsScope="text/plain" scope="text/plain" />
           <XmlFormattingPolicy inheritsSet="Mono" inheritsScope="application/xml" scope="application/xml" />
-          <CSharpFormattingPolicy IndentSwitchSection="True" NewLinesForBracesInTypes="False" NewLinesForBracesInMethods="False" SpacingAfterMethodDeclarationName="False" SpaceAfterMethodCallName="False" SpaceBeforeOpenSquareBracket="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+          <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
           <NameConventionPolicy>
             <Rules>
               <NamingRule Name="Namespaces" AffectedEntity="Namespace" VisibilityMask="VisibilityMask" NamingStyle="PascalCase" IncludeInstanceMembers="True" IncludeStaticEntities="True" />
