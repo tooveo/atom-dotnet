@@ -29,8 +29,8 @@ script:
 
   - ls ./testrunner/NUnit.Runners.2.6.4/tools/
 
-  - mono --runtime=v4.0  --profile=monocov:+[AtomSDK],+[AtomSDKTests] ./testrunner/NUnit.Runners.2.6.4/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
-  - cat ./testrunner/NUnit.Runners.2.6.4/tools/nunit3-console.exe.cov
+  - mono --runtime=v4.0  --profile=monocov:+[AtomSDK],+[AtomSDKTests] ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
+  #- cat ./testrunner/NUnit.Runners.2.6.4/tools/nunit3-console.exe.cov
  # - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll /noshadow
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
