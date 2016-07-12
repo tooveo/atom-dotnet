@@ -25,7 +25,7 @@ script:
   - export LD_LIBRARY_PATH=/usr/local/lib
   - xbuild /p:Configuration=Release ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+atom_sdk ./testrunner/NUnit.Console.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+atom_sdk ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
