@@ -3,7 +3,7 @@
 language: c
 
 install:
-  - sudo apt-get install mono-devel mono-gmcs mono-mcs nunit-console
+  - sudo apt-get install mono-devel mono-dmcs mono-mcs nunit-console
   - sudo apt-get install gtk-sharp2
   # install mono cecil
   - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
