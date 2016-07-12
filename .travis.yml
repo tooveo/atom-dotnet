@@ -2,21 +2,20 @@ language: csharp
 
 env:
   global:
-    - EnableNuGetPackageRestore=true
         # COVERITY_SCAN_TOKEN
     # ** specific to your project **
     - secure: "i5tmEo3wOvxB/nMq60T3p3jbb/tVdoiF/x13M2Ixq3gbEEzZl+dDT2Dc/JcDNZHoi9GcQG7e9kiffgaER5oeZqs8UunA5mMOQ8leiYi6vo108haRadZUWRiav4Voa4CJV+GPmfLMTjLCu7qZO3FjvTI4igHM3WGvVsve+mhSzFqoXkMV8Ya3xu246w7LuQIkWU/el14q5tJUuZxWDUQ/Ux4d1y99Xae/il5qm7DWqc5pgqhb6NI46YsDQ1DT61lIW2U1A8tqQFpElKrmtQ1jq7YiA21d1C+e2wbZsLeImhOochcK0JR9uQQn1mgJq/9L2KzkzGP8zAx0aDw6HROAvph9DA4LQemoVRva8HFfYTSWNxdWjBZ1JFjbvxKGCxNCxZY2pCaxA8USU0NDgSYRcMXSM7CY64SVqINzyQkOfd6j2BsASZQGNzjP5h+RLlCs9fviXjAKUHxkG1yVWCknk1RcuiXLVTF5iOAlu3yPaoo+DjA7EcAroGKshWn2pWwd1ramO+Wp2L+UOrhN/v2ckNUX1A2DPyFHYoLKBBslT1/ilTkD3wfiouCYVVrHOJ/vj+d3c3m2MGAZZuPGvHPyNu5RspwxD14tnMqs4DdjjMlCNt2XbHElFvL4qrS13Ubx3VIHvWeCPfH6NJoIi0Fv86Fgqqac36j+LPSCRHlMFCA="
 
-git:
-  # we need recursive init
-  submodules: false
-
-cache: apt
-
-solution: ./atom-sdk/AtomSDK/atom_sdk.sln
-
-script:
-  - xbuild ./atom-sdk/AtomSDK/atom_sdk.sln /p:Configuration="Release"
+#git:
+#  # we need recursive init
+#  submodules: false
+#
+#cache: apt
+#
+#solution: ./atom-sdk/AtomSDK/atom_sdk.sln
+#
+#script:
+#  - xbuild ./atom-sdk/AtomSDK/atom_sdk.sln /p:Configuration="Release"
 
 addons:
   coverity_scan:
