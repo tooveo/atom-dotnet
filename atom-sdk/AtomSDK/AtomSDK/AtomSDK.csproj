@@ -5,9 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{61B250B0-9351-4BBB-9139-7C36BFCECE92}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>AtomSDK</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>AtomSDK</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
