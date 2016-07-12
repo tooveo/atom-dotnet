@@ -7,9 +7,9 @@ install:
     $env:Path = "C:\Program Files (x86)\MSBuild\14.0\Bin;" + [Environment]::GetEnvironmentVariables("Machine")["Path"] + ";" + [Environment]::GetEnvironmentVariables("User")["Path"]
 
 
-    kvm upgrade
+    kvm.exe upgrade
 before_build:
-- ps: kpm restore
+- ps: kvm.exe restore
 build:
   verbosity: minimal
 test_script:
