@@ -28,7 +28,7 @@ install:
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
-  - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
+  - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln 
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
   - ls /usr/lib/cli/
 #
