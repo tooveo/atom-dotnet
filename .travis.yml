@@ -24,7 +24,7 @@ install:
   - cp /tmp/cecil/Mono.Cecil.dll .
   - ./configure
   - make
-  - sudo make install
+  - make install
   # return to source directory
   - cd ../../ironSource/atom-dotnet
 script:
@@ -38,7 +38,7 @@ script:
   #- cd ./atom-sdk/AtomSDKTests/bin/Release/
   #- export LD_LIBRARY_PATH=/usr/local/lib
   - export LD_LIBRARY_PATH=/usr/local/lib
-  - sudo mono --profile=monocov ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --profile=monocov ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
  
   #- MONO_OPTIONS="--profile=monocov:outfile=monocovCoverage.cov,+AtomSDK" nunit-console AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
