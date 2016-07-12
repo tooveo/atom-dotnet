@@ -24,7 +24,7 @@ install:
   - cp /tmp/cecil/Mono.Cecil.dll .
   - ./configure
   - make
-  - make install
+  - sudo make install
   # return to source directory
   - cd ../../ironSource/atom-dotnet
 script:
