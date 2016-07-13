@@ -12,6 +12,48 @@ atom-dotnet is the official [ironSource.atom](http://www.ironsrc.com/data-flow-m
 - [Sending an event](#Using-the-IronSource-API-to-send-events)
 
 #### Using the IronSource API to send events 
+##### Tracker usage
+Example of track an event in C#:
+```csharp
+	IronSourceAtomTracker tracker = new IronSourceAtomTracker();
+	// print debug info in console
+	tracker.EnableDebug(true);
+
+	tracker.SetBulkBytesSize(2);
+	tracker.SetFlushInterval(2000);
+	tracker.SetEndpoint("http://track.atom-data.io/");
+
+	string data = "{\"strings\": \"data track\"}";
+
+	tracker.track("<YOUR_STREAM_NAME>", data, "<YOUR_AUTH_KEY>");
+
+	// stop all tracker workers
+	tracker.Stop();
+```
+
+Interface for store data `IEventManager`.
+Implementation must to be synchronized for multithreading use.
+```csharp
+using System;
+
+namespace ironsource {
+    public interface IEventManager {
+        // Save event data to your storage (RAM, SQLite, File etc.)
+        void addEvent(Event eventObject);
+
+        // Get Event from storage for specific stream
+        Event getEvent(string stream);
+    }
+}
+```
+Using custom storage implementation:
+```csharp
+	IronSourceAtomTracker tracker = new IronSourceAtomTracker();
+
+	IEventManager customEventManager = new QueueEventManager();
+	tracker.SetEventManager(customEventManager);
+```
+
 ##### Low level API usage
 Example of sending an event in C#:
 ```csharp

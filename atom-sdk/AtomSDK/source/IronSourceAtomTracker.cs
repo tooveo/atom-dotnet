@@ -22,6 +22,10 @@ namespace ironsource {
         /// </summary>
         private int bulkBytesSize_ = 64 * 1024;
 
+        // Jitter time
+        private double minTime_ = 1;
+        private double maxTime_ = 10;
+
         private IronSourceAtom api_;
 
         private bool isDebug_;
@@ -34,8 +38,8 @@ namespace ironsource {
         private ConcurrentDictionary<string, string> streamData_;
 
         private IEventManager eventManager_;
-
         private EventTaskPool eventPool_;
+        private Random random_;
 
         /// <summary>
         /// API Tracker constructor
@@ -46,6 +50,8 @@ namespace ironsource {
 
             eventManager_ = new QueueEventManager();
             streamData_ = new ConcurrentDictionary<string, string>();
+
+            random_ = new Random();
 
             ThreadStart threadMethodHolder = new ThreadStart(this.EventWorker);
             eventWorkerThread_ = new Thread(threadMethodHolder);
@@ -58,6 +64,14 @@ namespace ironsource {
         public void Stop() {
             isRunWorker_ = false;
             eventPool_.Stop();
+        }
+
+        /// <summary>
+        /// Sets the event manager.
+        /// </summary>
+        /// <param name="eventManager">Event manager.</param>
+        public void SetEventManager(IEventManager eventManager) {
+            eventManager_ = eventManager;
         }
 
         /// <summary>
@@ -134,7 +148,7 @@ namespace ironsource {
         /// <param name="authKey">
         /// <see cref="string"/> Secret token for stream
         /// </param>
-        public void track(string stream, string data, string authKey = "") {
+        public void Track(string stream, string data, string authKey = "") {
             if (authKey.Length == 0) {
                 authKey = api_.GetAuth();
             }
@@ -151,6 +165,22 @@ namespace ironsource {
         /// </summary>
         public void flush() {
             isFlushData_ = true;
+        }
+       
+        /// <summary>
+        /// Gets the duration.
+        /// </summary>
+        /// <returns>The duration.</returns>
+        /// <param name="attempt">Attempt.</param>
+        private double GetDuration(int attempt) {           
+            double duration = minTime_ * Math.Pow(2, attempt);         
+            duration = (random_.NextDouble() * (duration - minTime_)) + minTime_;
+
+            if (duration > maxTime_) {
+                duration = maxTime_;
+            }
+
+            return duration;
         }
 
         /// <summary>
@@ -234,17 +264,19 @@ namespace ironsource {
         private void flushData(string stream, string authKey, List<string> data) {
             // data str 
             // send data
+            int attempt = 1;
+
             while (true) {
                 Response response = api_.PutEvents(stream, data, authKey);
                 PrintLog("data: " + data + "; response: " + response.status);
-                if (response.status < 500) {
+                if (response.status < 500 && response.status > 1) {
                     break;
                 }
 
-                // fixme add Jitter
-                Thread.Sleep(1000);
+                int duration = (int)(GetDuration(attempt++) * 1000);
+                Thread.Sleep(duration);
 
-                PrintLog("Retry request: " + data);
+                PrintLog("Duration: " + duration + "; Retry request: " + data);
             }
         }
 
