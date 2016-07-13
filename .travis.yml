@@ -5,7 +5,6 @@ language: csharp
 sudo: required
 mono:
   - 4.2.3
-  
 install:
   #- sudo apt-get update
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
@@ -31,20 +30,16 @@ install:
   - cd ../../ironSource/atom-dotnet
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib
-
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln 
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
-
   - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Runners.2.6.3/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
-
   - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
   - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
   - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
-
   - echo $TRAVIS_COMMIT
   - echo $TRAVIS_BRANCH
   - echo $REPO_COMMIT_AUTHOR
