@@ -2,6 +2,8 @@
 
 [![License][license-image]][license-url]
 [![Docs][docs-image]][docs-url]
+[![Build status][travis-image]][travis-url]
+[![Coverage Status][coverage-image]][coverage-url]
 
 atom-dotnet is the official [ironSource.atom](http://www.ironsrc.com/data-flow-management) SDK for the .NET Framework.
 
@@ -61,3 +63,7 @@ MIT
 [license-url]: LICENSE
 [docs-image]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-url]: https://ironsource.github.io/atom-dotnet/
+[travis-image]: https://travis-ci.org/ironSource/atom-dotnet.svg?branch=feature/ISA-374
+[travis-url]: https://travis-ci.org/ironSource/atom-dotnet
+[coverage-image]: https://coveralls.io/repos/github/ironSource/atom-dotnet/badge.svg?branch=feature/ISA-374
+[coverage-url]: https://coveralls.io/github/ironSource/atom-dotnet?branch=feature/ISA-374
