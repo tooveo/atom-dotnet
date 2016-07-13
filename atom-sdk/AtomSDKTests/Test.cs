@@ -8,12 +8,12 @@ namespace ironsource {
             [Test]
             public void TestCase1 ()
             {
-                //ironsource.IronSourceAtomTracker tracker = new ironsource.IronSourceAtomTracker();
+                ironsource.IronSourceAtomTracker tracker = new ironsource.IronSourceAtomTracker();
 
 
                 long currentTimer = Utils.GetCurrentMilliseconds ();
 
-                //Assert.True(false);
+                Assert.True(false);
             }
 
             [Test]
