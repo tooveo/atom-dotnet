@@ -38,6 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UtilsTests.cs" />
+    <Compile Include="EventTests.cs" />
+    <Compile Include="ResponseTests.cs" />
+    <Compile Include="QueueEventManagerTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
