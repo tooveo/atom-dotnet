@@ -11,7 +11,7 @@ namespace ironsource {
                 //ironsource.IronSourceAtomTracker tracker = new ironsource.IronSourceAtomTracker();
 
 
-                //long currentTimer = Utils.GetCurrentMilliseconds ();
+                long currentTimer = Utils.GetCurrentMilliseconds ();
 
                 //Assert.True(false);
             }
