@@ -31,21 +31,26 @@ install:
   - cd ../../ironSource/atom-dotnet
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib
+ 
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
+ 
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
+ 
   - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK,-System,-AtomSDKTests ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  #- mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
+ 
   - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
   - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
   - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+ 
   - echo $TRAVIS_COMMIT
   - echo $TRAVIS_BRANCH
   - echo $REPO_COMMIT_AUTHOR
   - echo $REPO_COMMIT_AUTHOR_EMAIL
   - echo $REPO_COMMIT_MESSAGE
   - echo $TRAVIS_JOB_ID
+  
   - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
