@@ -28,9 +28,6 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AtomSDK">
-      <HintPath>..\AtomSDK\AtomSDK\Temp\bin\Release\AtomSDK.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\..\..\..\soft\NUnit-3.4.1\bin\net-4.5\nunit.framework.dll</HintPath>
     </Reference>
@@ -38,6 +35,12 @@
   <ItemGroup>
     <Compile Include="Test.cs" />
     <Compile Include="ResponseTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AtomSDK\AtomSDK\AtomSDK.csproj">
+      <Project>{61B250B0-9351-4BBB-9139-7C36BFCECE92}</Project>
+      <Name>AtomSDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

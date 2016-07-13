@@ -7,8 +7,8 @@ mono:
   - 4.2.3
 install:
   #- sudo apt-get update
-  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
-  - nuget install NUnit.Runners -Version 2.6.3 -OutputDirectory testrunner
+  - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
   - sudo apt-get install nunit-console
   - sudo apt-get install gtk-sharp2
@@ -31,9 +31,8 @@ install:
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
-  - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln 
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Runners.2.6.3/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
