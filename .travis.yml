@@ -4,7 +4,7 @@ os:
 language: csharp
 sudo: required
 mono:
-  - 4.2.3
+  - 4.0.0
 install:
   #- sudo apt-get update
   - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
