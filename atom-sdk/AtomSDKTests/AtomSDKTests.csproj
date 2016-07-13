@@ -32,13 +32,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\..\..\..\soft\NUnit-3.4.1\bin\net-4.5\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="AtomSDK">
-      <HintPath>..\AtomSDK\AtomSDK\Temp\bin\Release\AtomSDK.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
-    <Compile Include="ResponseTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
