@@ -8,8 +8,6 @@
     <RootNamespace>AtomSDKTests</RootNamespace>
     <AssemblyName>AtomSDKTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-      <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +20,7 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -34,10 +32,7 @@
       <HintPath>..\AtomSDK\AtomSDK\Temp\bin\Release\AtomSDK.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\..\..\..\..\soft\NUnit-2.6.4\bin\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.mocks">
-      <HintPath>..\..\..\..\..\..\soft\NUnit-2.6.4\bin\framework\nunit.mocks.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\soft\NUnit-3.4.1\bin\net-4.5\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

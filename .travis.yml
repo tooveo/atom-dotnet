@@ -3,7 +3,9 @@ os:
   - linux
 language: csharp
 sudo: required
-
+mono:
+  - 4.2.3
+  
 install:
   #- sudo apt-get update
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
@@ -28,81 +30,25 @@ install:
   # return to source directory
   - cd ../../ironSource/atom-dotnet
 script:
+  - export LD_LIBRARY_PATH=/usr/local/lib
+
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln 
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
-  - ls /usr/lib/cli/
-  - ls ./testrunner/NUnit.Runners.2.6.3/tools
 
-  #- mono --profile=monocov:outfile=monocovCoverage.cov ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  #- cd ./atom-sdk/AtomSDKTests/bin/Release/
-  #- export LD_LIBRARY_PATH=/usr/local/lib
-  - export LD_LIBRARY_PATH=/usr/local/lib
-
-  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe
-
-  - mono --profile=monocov ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  - cat monocovCoverage.cov
-  - cd ./atom-sdk/AtomSDKTests/bin/Release/
-  - mono --profile=monocov:outfile=monocovCoverage.cov AtomSDKTests.dll
-   - cat monocovCoverage.cov
-  - mono --profile=monocov:outfile=monocovCoverage.cov ../../../../testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe AtomSDKTests.dll
-
-  - cat monocovCoverage.cov
-  - MONO_OPTIONS="--profile=monocov:outfile=monocovCoverage.cov,+AtomSDK" nunit-console AtomSDKTests.dll
- 
-  - cd ../../../../
-  - mono --profile=monocov ./testrunner/NUnit.Runners.2.6.3/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
-  
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK ./testrunner/NUnit.Runners.2.6.3/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
-#language: csharp
-#sudo: required
-#install:
-#  - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
-#  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
-#  - nuget install xunit.runners -Version  1.9.2  -OutputDirectory testrunner
-#  - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
-#
-#  - chmod +x ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe
-#  - sudo apt-get install gtk-sharp2
-#  # install mono cecil
-#  - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
-#  - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
-#  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll .
-#  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/
-#  # install monocov
-#  - git clone --depth=50 git://github.com/csMACnz/monocov.git ../../csMACnz/monocov
-#  - cd ../../csMACnz/monocov
-#  - cp /tmp/cecil/Mono.Cecil.dll .
-#  - ./configure
-#  - make
-#  - sudo make install
-#  # return to source directory
-#  - cd ../../ironSource/atom-dotnet
-#
-#script:
-#  - export LD_LIBRARY_PATH=/usr/local/lib
-#  - xbuild /p:Configuration=Debug ./atom-sdk/AtomSDK/atom_sdk.sln
-#
-#  - ls ./testrunner/NUnit.Runners.2.6.4/tools/
-#
-#  - mono --runtime=v4.0  --profile=monocov:+[AtomSDK],+[AtomSDKTests] ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Debug/AtomSDKTests.dll
-#  #- cat ./testrunner/NUnit.Runners.2.6.4/tools/nunit3-console.exe.cov
-# # - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[AtomSDK] ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./atom-sdk/AtomSDKTests/AtomSDKTests/bin/Release/AtomSDKTests.dll /noshadow
-#  - monocov --export-xml=monocovCoverage monocovCoverage.cov
-#  - cat monocovCoverage.cov
-#  - ls monocovCoverage
-#
-#  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
-#  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
-#  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
 
-#  - echo $TRAVIS_COMMIT
-#  - echo $TRAVIS_BRANCH
-#  - echo $REPO_COMMIT_AUTHOR
-#  - echo $REPO_COMMIT_AUTHOR_EMAIL
-#  - echo $REPO_COMMIT_MESSAGE
-#  - echo $TRAVIS_JOB_ID
-#  - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
+  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
+  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
+  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+
+  - echo $TRAVIS_COMMIT
+  - echo $TRAVIS_BRANCH
+  - echo $REPO_COMMIT_AUTHOR
+  - echo $REPO_COMMIT_AUTHOR_EMAIL
+  - echo $REPO_COMMIT_MESSAGE
+  - echo $TRAVIS_JOB_ID
+  - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
