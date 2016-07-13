@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -54,9 +53,7 @@ namespace ironsource {
     	/// <see cref="string"/> data to encode
     	/// </param>      
     	public static string Base64Encode(string data) {
-    		byte[] dataBytes = Encoding.UTF8.GetBytes(data);
-            string resultStr = Convert.ToBase64String(dataBytes);
-    		return resultStr;
+    		return Convert.ToBase64String (Encoding.UTF8.GetBytes(data));
     	}
 
     	/// <summary>
