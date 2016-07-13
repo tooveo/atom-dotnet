@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['utils',['Utils',['../classironsource_1_1_utils.html',1,'ironsource']]]
+  ['queueeventmanager',['QueueEventManager',['../classironsource_1_1_queue_event_manager.html',1,'ironsource']]]
 ];
