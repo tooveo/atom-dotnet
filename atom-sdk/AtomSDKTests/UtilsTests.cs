@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 using NUnit.Framework;
 
@@ -64,6 +65,7 @@ namespace ironsource {
             [Test()]
             public void CurrentTimeTest_Test() {
                 long previousTime = Utils.GetCurrentMilliseconds();
+                Thread.Sleep(10);
                 long currentTime = Utils.GetCurrentMilliseconds();
 
                 Assert.AreNotEqual(currentTime, previousTime);
