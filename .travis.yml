@@ -8,8 +8,8 @@ mono:
 install:
   #- sudo apt-get update
   - nuget restore ./atom-sdk/AtomSDK/atom_sdk.sln
-  #- nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
-  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  #- nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
   - nuget install coveralls.net -Version 0.6.0 -OutputDirectory testrunner
   - sudo apt-get install nunit-console
   - sudo apt-get install gtk-sharp2
