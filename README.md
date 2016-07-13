@@ -15,20 +15,20 @@ atom-dotnet is the official [ironSource.atom](http://www.ironsrc.com/data-flow-m
 ##### Tracker usage
 Example of track an event in C#:
 ```csharp
-	IronSourceAtomTracker tracker = new IronSourceAtomTracker();
-	// print debug info in console
-	tracker.EnableDebug(true);
+IronSourceAtomTracker tracker = new IronSourceAtomTracker();
+// print debug info in console
+tracker.EnableDebug(true);
 
-	tracker.SetBulkBytesSize(2);
-	tracker.SetFlushInterval(2000);
-	tracker.SetEndpoint("http://track.atom-data.io/");
+tracker.SetBulkBytesSize(2);
+tracker.SetFlushInterval(2000);
+tracker.SetEndpoint("http://track.atom-data.io/");
 
-	string data = "{\"strings\": \"data track\"}";
+string data = "{\"strings\": \"data track\"}";
 
-	tracker.track("<YOUR_STREAM_NAME>", data, "<YOUR_AUTH_KEY>");
+tracker.track("<YOUR_STREAM_NAME>", data, "<YOUR_AUTH_KEY>");
 
-	// stop all tracker workers
-	tracker.Stop();
+// stop all tracker workers
+tracker.Stop();
 ```
 
 Interface for store data `IEventManager`.
@@ -48,54 +48,54 @@ namespace ironsource {
 ```
 Using custom storage implementation:
 ```csharp
-	IronSourceAtomTracker tracker = new IronSourceAtomTracker();
+IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 
-	IEventManager customEventManager = new QueueEventManager();
-	tracker.SetEventManager(customEventManager);
+IEventManager customEventManager = new QueueEventManager();
+tracker.SetEventManager(customEventManager);
 ```
 
 ##### Low level API usage
 Example of sending an event in C#:
 ```csharp
-	IronSourceAtom api = new IronSourceAtom();
-	// print debug info in console
-	api.EnableDebug(true);
+IronSourceAtom api = new IronSourceAtom();
+// print debug info in console
+api.EnableDebug(true);
 
-	// example put event "GET"
-	string streamGet = "<YOUR_STREAM_NAME>;
-	string dataGet = "{\"strings\": \"data GET\"}";
+// example put event "GET"
+string streamGet = "<YOUR_STREAM_NAME>;
+string dataGet = "{\"strings\": \"data GET\"}";
 
-	api.SetAuth("<YOUR_AUTH_KEY>");
-	Response responseGet = api.PutEvent(streamGet, dataGet, HttpMethod.GET);
+api.SetAuth("<YOUR_AUTH_KEY>");
+Response responseGet = api.PutEvent(streamGet, dataGet, HttpMethod.GET);
 
-	Console.WriteLine("GET data: " + responseGet.data);
-	Console.WriteLine("GET error: " + responseGet.error);
-	Console.WriteLine("GET status: " + responseGet.status);
+Console.WriteLine("GET data: " + responseGet.data);
+Console.WriteLine("GET error: " + responseGet.error);
+Console.WriteLine("GET status: " + responseGet.status);
 
-	// example put event "POST"
-	string streamPost = "<YOUR_STREAM_NAME>";
-	string dataPost = "{\"strings\": \"data POST\"}";
+// example put event "POST"
+string streamPost = "<YOUR_STREAM_NAME>";
+string dataPost = "{\"strings\": \"data POST\"}";
 
-	api.SetAuth("<YOUR_AUTH_KEY>");
-	Response responsePost = api.PutEvent(streamPost, dataPost);
+api.SetAuth("<YOUR_AUTH_KEY>");
+Response responsePost = api.PutEvent(streamPost, dataPost);
 
-	Console.WriteLine("POST data: " + responsePost.data);
-	Console.WriteLine("POST error: " + responsePost.error);
-	Console.WriteLine("POST status: " + responsePost.status);
+Console.WriteLine("POST data: " + responsePost.data);
+Console.WriteLine("POST error: " + responsePost.error);
+Console.WriteLine("POST status: " + responsePost.status);
 
-	// example put events - bulk
-	string streamBulk = "<YOUR_STREAM_NAME>";
-	List<String> dataBulk = new List<string>(); 
-	dataBulk.Add("{\"strings\": \"test BULK 1\"}");
-	dataBulk.Add("{\"strings\": \"test BULK 2\"}");
-	dataBulk.Add("{\"strings\": \"test BULK 3\"}");
+// example put events - bulk
+string streamBulk = "<YOUR_STREAM_NAME>";
+List<String> dataBulk = new List<string>(); 
+dataBulk.Add("{\"strings\": \"test BULK 1\"}");
+dataBulk.Add("{\"strings\": \"test BULK 2\"}");
+dataBulk.Add("{\"strings\": \"test BULK 3\"}");
 
-	api.SetAuth("<YOUR_AUTH_KEY>");
-	Response responseBulk = api.PutEvents(streamBulk, dataBulk);
+api.SetAuth("<YOUR_AUTH_KEY>");
+Response responseBulk = api.PutEvents(streamBulk, dataBulk);
 
-	Console.WriteLine("Bulk data: " + responseBulk.data);
-	Console.WriteLine("Bulk error: " + responseBulk.error);
-	Console.WriteLine("Bulk status: " + responseBulk.status);
+Console.WriteLine("Bulk data: " + responseBulk.data);
+Console.WriteLine("Bulk error: " + responseBulk.error);
+Console.WriteLine("Bulk status: " + responseBulk.status);
 ```
 
 ### License
