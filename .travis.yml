@@ -37,7 +37,7 @@ script:
  
   - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
  
-  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK,-AtomSDKTests,-Utils.GetCurrentMilliseconds ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
+  - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK,-AtomSDKTests,+System.Datetime ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
   - cat monocovCoverage.cov
   - ls monocovCoverage
@@ -52,5 +52,10 @@ script:
   - echo $REPO_COMMIT_AUTHOR_EMAIL
   - echo $REPO_COMMIT_MESSAGE
   - echo $TRAVIS_JOB_ID
+
+  - rm ./monocovCoverage/*Atom.xml
+  - rm ./monocovCoverage/*Request.xml
+  - rm ./monocovCoverage/*Tracker.xml
+  - rm ./monocovCoverage/*EventTaskPool.xml
 
   - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths

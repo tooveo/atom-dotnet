@@ -98,7 +98,7 @@ namespace ironsource {
         /// The current milliseconds.
         /// </returns>
     	public static long GetCurrentMilliseconds() {
-            return (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+            return (System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond);
     	}
     }
 }
