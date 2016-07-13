@@ -8,6 +8,8 @@
     <RootNamespace>AtomSDKTests</RootNamespace>
     <AssemblyName>AtomSDKTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +22,6 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -31,16 +32,13 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\..\..\..\soft\NUnit-3.4.1\bin\net-4.5\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="AtomSDK">
+      <HintPath>..\AtomSDK\AtomSDK\Temp\bin\Release\AtomSDK.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
     <Compile Include="ResponseTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AtomSDK\AtomSDK\AtomSDK.csproj">
-      <Project>{61B250B0-9351-4BBB-9139-7C36BFCECE92}</Project>
-      <Name>AtomSDK</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
