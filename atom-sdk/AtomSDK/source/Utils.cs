@@ -53,7 +53,7 @@ namespace ironsource {
     	/// <see cref="string"/> data to encode
     	/// </param>      
     	public static string Base64Encode(string data) {
-    		return Convert.ToBase64String (Encoding.UTF8.GetBytes(data));
+    		return Convert.ToBase64String(Encoding.UTF8.GetBytes(data));
     	}
 
     	/// <summary>
@@ -98,7 +98,7 @@ namespace ironsource {
         /// The current milliseconds.
         /// </returns>
     	public static long GetCurrentMilliseconds() {
-		    return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            return (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
     	}
     }
 }
