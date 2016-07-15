@@ -53,6 +53,8 @@ script:
   - echo $REPO_COMMIT_MESSAGE
   - echo $TRAVIS_JOB_ID
 
+  - ls ./monocovCoverage/
+
   - rm ./monocovCoverage/*Atom.xml
   - rm ./monocovCoverage/*Request.xml
   - rm ./monocovCoverage/*Tracker.xml
