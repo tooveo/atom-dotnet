@@ -36,7 +36,7 @@ namespace ironsource {
         /// <summary>
         /// Inits the headers.
         /// </summary>
-        protected virtual void initHeaders() {            
+        protected void initHeaders() {            
             headers_.Add("x-ironsource-atom-sdk-type", "dotnet");
             headers_.Add("x-ironsource-atom-sdk-version", IronSourceAtom.API_VERSION_);
         }
@@ -70,6 +70,14 @@ namespace ironsource {
         /// </summary>
         public string GetAuth() {
             return authKey_;
+        }
+
+        /// <summary>
+        /// Gets the URL.
+        /// </summary>
+        /// <returns>The URL.</returns>
+        public string GetEndpoint() {
+            return endpoint_;
         }
 
         /// <summary>

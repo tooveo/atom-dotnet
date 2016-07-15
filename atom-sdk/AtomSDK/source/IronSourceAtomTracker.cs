@@ -67,6 +67,26 @@ namespace ironsource {
         }
 
         /// <summary>
+        /// Sets the size of the task pool.
+        /// </summary>
+        /// <param name="taskPoolSize">
+        /// <see cref="int"/> task pool size
+        /// </param>
+        public void SetTaskPoolSize(int taskPoolSize) {
+            taskPoolSize_ = taskPoolSize;
+        }
+
+        /// <summary>
+        /// Sets the task workers count.
+        /// </summary>
+        /// <param name="taskWorkersCount">
+        /// <see cref="int"/> task workers count
+        /// </param>
+        public void SetTaskWorkersCount(int taskWorkersCount) {
+            taskWorkersCount_ = taskWorkersCount;
+        }
+
+        /// <summary>
         /// Sets the event manager.
         /// </summary>
         /// <param name="eventManager">Event manager.</param>
@@ -276,7 +296,7 @@ namespace ironsource {
                 int duration = (int)(GetDuration(attempt++) * 1000);
                 Thread.Sleep(duration);
 
-                PrintLog("Duration: " + duration + "; Retry request: " + data);
+                PrintLog("Url: " + api_.GetEndpoint() + " Retry request: " + data);
             }
         }
 

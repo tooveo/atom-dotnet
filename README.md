@@ -23,6 +23,10 @@ tracker.SetBulkBytesSize(2);
 tracker.SetFlushInterval(2000);
 tracker.SetEndpoint("http://track.atom-data.io/");
 
+// set event pool size and worker threads count
+tracker.SetTaskPoolSize(1000);
+tracker.SetTaskWorkersCount(24);
+
 string data = "{\"strings\": \"data track\"}";
 
 tracker.track("<YOUR_STREAM_NAME>", data, "<YOUR_AUTH_KEY>");

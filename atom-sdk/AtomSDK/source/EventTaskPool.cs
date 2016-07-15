@@ -1,12 +1,43 @@
 ﻿using System;
-
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
 
 namespace ironsource {
-    class EventTaskPool {
+    public class EventTaskPoolException : Exception {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// </summary>
+        public EventTaskPoolException() {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// </summary>
+        /// <param name="message">
+        /// <see cref="string"/> error message
+        /// </param>
+        public EventTaskPoolException(string message) 
+            : base(message) {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// </summary>
+        /// <param name="message">
+        /// <see cref="string"/> error message
+        /// </param>
+        /// <param name="inner">
+        /// <see cref="Exception"/> inner exception
+        /// </param>
+        public EventTaskPoolException(string message, Exception inner) 
+            : base(message, inner) {
+        }
+    }
+
+
+    public class EventTaskPool {
         private ConcurrentQueue<Action> events_;
         private bool isRunning_;
 
@@ -17,8 +48,12 @@ namespace ironsource {
         /// <summary>
         /// Initializes a new instance of the <see cref="ironsource.EventTaskPool"/> class.
         /// </summary>
-        /// <param name="maxThreads">Max threads.</param>
-        /// <param name="maxEvents">Max events.</param>
+        /// <param name="maxThreads">
+        /// <see cref="int"/> max thread for event pool
+        /// </param>
+        /// <param name="maxEvents">
+        /// <see cref="int"/> max events for event pool
+        /// </param>
         public EventTaskPool(int maxThreads, int maxEvents) {
             maxEvents_ = maxEvents;
             events_ = new ConcurrentQueue<Action>();
@@ -64,11 +99,12 @@ namespace ironsource {
         /// <summary>
         /// Adds the event.
         /// </summary>
-        /// <param name="eventAction">Event action.</param>
+        /// <param name="eventAction">
+        /// <see cref="Action"/> event callback action
+        /// </param>
         public void addEvent(Action eventAction) {
             if (events_.Count > maxEvents_) {
-                // fixme raise exception
-                return;
+                throw new EventTaskPoolException("Exceeded max event count in Event Task Pool!");
             }
             events_.Enqueue(eventAction);
         }
