@@ -59,5 +59,8 @@ script:
   - rm ./monocovCoverage/*Request.xml
   - rm ./monocovCoverage/*Tracker.xml
   - rm ./monocovCoverage/*TaskPool.xml
+  - rm ./monocovCoverage/*TaskPoolException.xml
+
+  - ls ./monocovCoverage/
 
   - mono ./testrunner/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken "womfTcFgoJZiUifnlCHht8d82qQIQcW24" --commitId $TRAVIS_COMMIT --commitBranch "$TRAVIS_BRANCH" --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
