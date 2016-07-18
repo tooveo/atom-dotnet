@@ -103,7 +103,7 @@ Console.WriteLine("Bulk status: " + responseBulk.status);
 ```
 
 ### License
-MIT
+[MIT](LICENSE)
 
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE
