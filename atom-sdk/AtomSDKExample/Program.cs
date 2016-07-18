@@ -32,18 +32,14 @@ namespace AtomSDKExample {
 
 				Action eventSend = delegate() {
 					while (isRunThreads) {
-						string data = "{\"strings\": \"---- d: " + Interlocked.Increment(ref index) + 
+						string data = "{\"strings\": \"+++++ d: " + Interlocked.Increment(ref index) + 
 						" t: " + threadIndex + "\"}";
-
-						Debug.WriteLine("Send: " + data);
 
 						tracker.Track("ibtest", data, "");
 
 						if (Interlocked.Increment(ref eventSended) >= 33) {
 							isRunThreads = false;
 						}
-
-						Thread.Sleep(3000);
 					}
 				};
 

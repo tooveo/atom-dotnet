@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace ironsource {
+    /// <summary>
+    /// Interface for store data
+    /// </summary>
     public interface IEventManager {
         /// <summary>
         /// Adds the event.
@@ -9,7 +12,7 @@ namespace ironsource {
         void addEvent(Event eventObject);
 
         /// <summary>
-        /// Gets the event.
+        /// Get one the event from store.
         /// </summary>
         /// <returns>
         /// <see cref="Event"/> The event.

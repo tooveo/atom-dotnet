@@ -6,6 +6,9 @@ using System.Threading;
 using System.Text;
 
 namespace ironsource {
+    /// <summary>
+    /// Iron source atom tracker.
+    /// </summary>
     public class IronSourceAtomTracker {
         private int taskWorkersCount_ = 24;
         private int taskPoolSize_ = 10000;
@@ -13,9 +16,9 @@ namespace ironsource {
         /// <summary>
         /// The flush interval in milliseconds
         /// </summary>
-        private long flushInterval_ = 100000;
+        private long flushInterval_ = 1000;
 
-        private int bulkSize_ = 1000;
+        private int bulkSize_ = 500;
 
         /// <summary>
         /// The size of the bulk in bytes.
@@ -183,7 +186,7 @@ namespace ironsource {
         /// <summary>
         /// Flush all data to server
         /// </summary>
-        public void flush() {
+        public void Flush() {
             isFlushData_ = true;
         }
        
@@ -210,7 +213,9 @@ namespace ironsource {
             long timerStartTime = Utils.GetCurrentMilliseconds();          
             long timerDeltaTime = 0;
 
+            // temporary buffers for hold event data per stream
             Dictionary<string, List<string>> eventsBuffer = new Dictionary<string, List<string>>();
+            // buffers size storage
             Dictionary<string, int> eventsSize = new Dictionary<string, int>();
 
             Action<string, string, List<string>> flushEvent = delegate(string stream, 
@@ -222,7 +227,7 @@ namespace ironsource {
                 timerDeltaTime = 0;
 
                 eventPool_.addEvent(delegate() {            			
-                        flushData(stream, authKey, buffer);
+                        FlushData(stream, authKey, buffer);
                     });
             };
 
@@ -281,7 +286,7 @@ namespace ironsource {
         /// <param name="stream">Stream.</param>
         /// <param name="authKey">Auth key.</param>
         /// <param name="data">Data.</param>
-        private void flushData(string stream, string authKey, List<string> data) {
+        private void FlushData(string stream, string authKey, List<string> data) {
             // data str 
             // send data
             int attempt = 1;

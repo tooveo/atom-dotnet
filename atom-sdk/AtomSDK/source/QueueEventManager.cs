@@ -4,6 +4,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace ironsource {
+    /// <summary>
+    /// Queue event manager.
+    /// </summary>
     public class QueueEventManager: IEventManager {
         private ConcurrentDictionary<string, ConcurrentQueue<Event>> events_;
 
