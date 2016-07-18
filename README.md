@@ -109,7 +109,7 @@ MIT
 [license-url]: LICENSE
 [docs-image]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-url]: https://ironsource.github.io/atom-dotnet/
-[travis-image]: https://travis-ci.org/ironSource/atom-dotnet.svg?branch=feature/ISA-374
+[travis-image]: https://travis-ci.org/ironSource/atom-dotnet.svg?branch=master
 [travis-url]: https://travis-ci.org/ironSource/atom-dotnet
-[coverage-image]: https://coveralls.io/repos/github/ironSource/atom-dotnet/badge.svg?branch=feature/ISA-374
-[coverage-url]: https://coveralls.io/github/ironSource/atom-dotnet?branch=feature/ISA-374
+[coverage-image]: https://coveralls.io/repos/github/ironSource/atom-dotnet/badge.svg?branch=master
+[coverage-url]: https://coveralls.io/github/ironSource/atom-dotnet?branch=master
