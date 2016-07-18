@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtomSDK", "AtomSDK\AtomSDK.csproj", "{61B250B0-9351-4BBB-9139-7C36BFCECE92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtomSDKExample", "..\AtomSDKExample\AtomSDKExample.csproj", "{D1B376B7-1610-4BE5-8B2C-98C7B6688552}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B250B0-9351-4BBB-9139-7C36BFCECE92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B376B7-1610-4BE5-8B2C-98C7B6688552}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 120
+		$1.TabsToSpaces = False
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.NamespaceBraceStyle = EndOfLine
+		$2.ClassBraceStyle = EndOfLine
+		$2.InterfaceBraceStyle = EndOfLine
+		$2.StructBraceStyle = EndOfLine
+		$2.EnumBraceStyle = EndOfLine
+		$2.MethodBraceStyle = EndOfLine
+		$2.ConstructorBraceStyle = EndOfLine
+		$2.DestructorBraceStyle = EndOfLine
+		$2.BeforeMethodDeclarationParentheses = False
+		$2.BeforeConstructorDeclarationParentheses = False
+		$2.BeforeIndexerDeclarationBracket = False
+		$2.BeforeDelegateDeclarationParentheses = False
+		$2.AfterDelegateDeclarationParameterComma = True
+		$2.MethodDeclarationParameterWrapping = WrapIfTooLong
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.DotNetNamingPolicy = $3
+		$3.DirectoryNamespaceAssociation = None
+		$3.ResourceNamePolicy = FileFormatDefault
+	EndGlobalSection
+EndGlobal
