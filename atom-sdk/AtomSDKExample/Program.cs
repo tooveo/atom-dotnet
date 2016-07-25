@@ -19,7 +19,7 @@ namespace AtomSDKExample {
             tracker.SetTaskWorkersCount(24);
 
 			// test for bulk size
-			tracker.SetBulkBytesSize(2);
+			//tracker.SetBulkBytesSize(2);
 			tracker.SetFlushInterval(2000);
 			tracker.SetEndpoint("http://track.atom-data.io/");
 
@@ -27,15 +27,21 @@ namespace AtomSDKExample {
 
 			int eventSended = 0;
 			bool isRunThreads = true;
-			for (int i = 0; i < 5; ++i) {
-				int threadIndex = i;
-
+			for (int i = 0; i < 10; ++i) {
 				Action eventSend = delegate() {
+                    int threadIndex = i;
+
 					while (isRunThreads) {
 						string data = "{\"strings\": \"+++++ d: " + Interlocked.Increment(ref index) + 
 						" t: " + threadIndex + "\"}";
 
-						tracker.Track("ibtest", data, "");
+                        if (threadIndex < 5) {
+                            tracker.Track("ibtest", data, "I40iwPPOsG3dfWX30labriCg9HqMfL");
+                        } else {
+                            tracker.Track("sdkdev_sdkdev.public.g8y3etest", data, "I40iwPPOsG3dfWX30labriCg9HqMfL");
+                        }
+
+                        Thread.Sleep(200);
 
 						if (Interlocked.Increment(ref eventSended) >= 33) {
 							isRunThreads = false;

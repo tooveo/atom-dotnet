@@ -210,8 +210,8 @@ namespace ironsource {
         /// Events the worker.
         /// </summary>
         private void EventWorker() {
-            long timerStartTime = Utils.GetCurrentMilliseconds();          
-            long timerDeltaTime = 0;
+            Dictionary<string, long> timerStartTime = new Dictionary<string, long>();
+            Dictionary<string, long> timerDeltaTime = new Dictionary<string, long>();
 
             // temporary buffers for hold event data per stream
             Dictionary<string, List<string>> eventsBuffer = new Dictionary<string, List<string>>();
@@ -224,7 +224,7 @@ namespace ironsource {
                 List<string> buffer = new List<string>(events);
                 events.Clear();
                 eventsSize[stream] = 0;
-                timerDeltaTime = 0;
+                timerDeltaTime[stream] = 0;
 
                 eventPool_.addEvent(delegate() {            			
                         FlushData(stream, authKey, buffer);
@@ -233,10 +233,26 @@ namespace ironsource {
 
             while (isRunWorker_) {
                 foreach (var entry in streamData_) {
-                    timerDeltaTime += Utils.GetCurrentMilliseconds() - timerStartTime;
-                    timerStartTime = Utils.GetCurrentMilliseconds();
-
                     string streamName = entry.Key;
+                    if (!timerStartTime.ContainsKey(streamName)) {
+                        timerStartTime.Add(streamName, Utils.GetCurrentMilliseconds());
+                    }
+
+                    if (!timerDeltaTime.ContainsKey(streamName)) {
+                        timerDeltaTime.Add(streamName, 0);
+                    }
+
+                    timerDeltaTime[streamName] += Utils.GetCurrentMilliseconds() - timerStartTime[streamName];
+                    timerStartTime[streamName] = Utils.GetCurrentMilliseconds();
+
+                    if (timerDeltaTime[streamName] >= flushInterval_) {
+                        timerDeltaTime[streamName] = 0;
+                        PrintLog("Timer for stream: " + streamName);
+
+                        if (eventsBuffer[streamName].Count > 0) {
+                            flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
+                        }
+                    }
 
                     Event eventObject = eventManager_.getEvent(streamName);
                     if (eventObject == null) {
@@ -267,11 +283,7 @@ namespace ironsource {
                         flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
                     }
 
-                    if (timerDeltaTime >= flushInterval_) {
-                        timerDeltaTime = 0;
-                        PrintLog("Timer");
-                        flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
-                    }
+
                 }
 
                 if (isFlushData_) {
