@@ -224,7 +224,6 @@ namespace ironsource {
                 List<string> buffer = new List<string>(events);
                 events.Clear();
                 eventsSize[stream] = 0;
-                timerDeltaTime[stream] = 0;
 
                 eventPool_.addEvent(delegate() {            			
                         FlushData(stream, authKey, buffer);
@@ -246,8 +245,8 @@ namespace ironsource {
                     timerStartTime[streamName] = Utils.GetCurrentMilliseconds();
 
                     if (timerDeltaTime[streamName] >= flushInterval_) {
+                        PrintLog("Timer for stream: " + streamName + "; delta timer: " + timerDeltaTime[streamName]);
                         timerDeltaTime[streamName] = 0;
-                        PrintLog("Timer for stream: " + streamName);
 
                         if (eventsBuffer[streamName].Count > 0) {
                             flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);

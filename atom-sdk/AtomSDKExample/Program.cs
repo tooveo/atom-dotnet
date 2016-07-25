@@ -20,7 +20,7 @@ namespace AtomSDKExample {
 
 			// test for bulk size
 			//tracker.SetBulkBytesSize(2);
-			tracker.SetFlushInterval(2000);
+			tracker.SetFlushInterval(3000);
 			tracker.SetEndpoint("http://track.atom-data.io/");
 
 			int index = 0;
@@ -36,12 +36,11 @@ namespace AtomSDKExample {
 						" t: " + threadIndex + "\"}";
 
                         if (threadIndex < 5) {
-                            tracker.Track("ibtest", data, "I40iwPPOsG3dfWX30labriCg9HqMfL");
+                            tracker.Track("ibtest", data, "");
                         } else {
-                            tracker.Track("sdkdev_sdkdev.public.g8y3etest", data, "I40iwPPOsG3dfWX30labriCg9HqMfL");
+                            // another stream
+                            tracker.Track("ibtest2", data, "");
                         }
-
-                        Thread.Sleep(200);
 
 						if (Interlocked.Increment(ref eventSended) >= 33) {
 							isRunThreads = false;
