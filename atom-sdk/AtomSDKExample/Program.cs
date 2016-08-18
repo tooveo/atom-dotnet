@@ -14,9 +14,6 @@ namespace AtomSDKExample {
 
 			IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 			tracker.EnableDebug(true);
-			// set event pool size and worker threads count
-			tracker.SetTaskPoolSize(1000);
-            tracker.SetTaskWorkersCount(24);
 
 			// test for bulk size
 			//tracker.SetBulkBytesSize(2);

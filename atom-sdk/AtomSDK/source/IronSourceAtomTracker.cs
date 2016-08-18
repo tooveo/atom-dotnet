@@ -10,8 +10,8 @@ namespace ironsource {
     /// Iron source atom tracker.
     /// </summary>
     public class IronSourceAtomTracker {
-        private int taskWorkersCount_ = 24;
-        private int taskPoolSize_ = 10000;
+        private const int TASK_WORKERS_COUNT_ = 24;
+        private const int TASK_POOL_SIZE_ = 10000;
 
         /// <summary>
         /// The flush interval in milliseconds
@@ -47,9 +47,15 @@ namespace ironsource {
         /// <summary>
         /// API Tracker constructor
         /// </summary>
-        public IronSourceAtomTracker() {
+        /// <param name="taskWorkersCount">
+        /// <see cref="int"/> task workers count
+        /// </param>
+        /// <param name="taskPoolSize">
+        /// <see cref="int"/> task pool size
+        /// </param>
+        public IronSourceAtomTracker(int taskWorkersCount=TASK_WORKERS_COUNT_, int taskPoolSize=TASK_POOL_SIZE_) {
             api_ = new IronSourceAtom();
-            eventPool_ = new EventTaskPool(taskWorkersCount_, taskPoolSize_);
+            eventPool_ = new EventTaskPool(taskWorkersCount, taskPoolSize);
 
             eventManager_ = new QueueEventManager();
             streamData_ = new ConcurrentDictionary<string, string>();
@@ -67,26 +73,6 @@ namespace ironsource {
         public void Stop() {
             isRunWorker_ = false;
             eventPool_.Stop();
-        }
-
-        /// <summary>
-        /// Sets the size of the task pool.
-        /// </summary>
-        /// <param name="taskPoolSize">
-        /// <see cref="int"/> task pool size
-        /// </param>
-        public void SetTaskPoolSize(int taskPoolSize) {
-            taskPoolSize_ = taskPoolSize;
-        }
-
-        /// <summary>
-        /// Sets the task workers count.
-        /// </summary>
-        /// <param name="taskWorkersCount">
-        /// <see cref="int"/> task workers count
-        /// </param>
-        public void SetTaskWorkersCount(int taskWorkersCount) {
-            taskWorkersCount_ = taskWorkersCount;
         }
 
         /// <summary>
