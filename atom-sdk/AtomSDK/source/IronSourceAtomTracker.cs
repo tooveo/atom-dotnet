@@ -233,9 +233,10 @@ namespace ironsource {
                     if (timerDeltaTime[streamName] >= flushInterval_) {
                         PrintLog("Timer for stream: " + streamName + "; delta timer: " + timerDeltaTime[streamName]);
                         timerDeltaTime[streamName] = 0;
-
-                        if (eventsBuffer[streamName].Count > 0) {
-                            flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
+                        if (eventsBuffer.ContainsKey(streamName)) {
+                            if (eventsBuffer[streamName].Count > 0) {
+                                flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
+                            }
                         }
                     }
 
@@ -256,19 +257,13 @@ namespace ironsource {
                     eventsSize[streamName] += Encoding.Unicode.GetByteCount(eventObject.data_);
                     eventsBuffer[streamName].Add(eventObject.data_);
 
-                    if (eventsSize[streamName] >= bulkBytesSize_) {
-                        flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
-                    }
-
-                    if (eventsBuffer[streamName].Count >= bulkSize_) {
-                        flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
-                    }
-
                     if (isFlushData_) {
                         flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
+                    } else if (eventsSize[streamName] >= bulkBytesSize_) {
+                        flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
+                    } else if (eventsBuffer[streamName].Count >= bulkSize_) {
+                        flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
                     }
-
-
                 }
 
                 if (isFlushData_) {
