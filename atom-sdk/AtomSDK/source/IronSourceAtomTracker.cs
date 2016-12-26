@@ -242,7 +242,7 @@ namespace ironsource {
 
                     Event eventObject = eventManager_.getEvent(streamName);
                     if (eventObject == null) {
-                        //Thread.Sleep(25);
+                        Thread.Sleep(25);
                         continue;
                     }
 
