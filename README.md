@@ -26,6 +26,10 @@ The tracker is used for sending events to Atom based on several conditions
 - Number of accumulated events has reached 200 (default)
 - Size of accumulated events has reached 512KB (default)
 
+The tracker is a based on a thread pool which is controlled by BatchEventPool and a backlog (QueueEventStorage)    
+By default the BatchEventPool is configured to use 1 thread (worker), you can change it when constructing the tracker.
+To see the full code check the [example section](#example)
+
 To see the full code check the [example section](#example)
 ```csharp
 IronSourceAtomTracker tracker = new IronSourceAtomTracker();
