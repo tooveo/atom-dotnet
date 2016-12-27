@@ -10,15 +10,15 @@ namespace ironsource {
     /// Iron source atom tracker.
     /// </summary>
     public class IronSourceAtomTracker {
-        private const int TASK_WORKERS_COUNT_ = 24;
-        private const int TASK_POOL_SIZE_ = 10000;
+        private const int TASK_WORKERS_COUNT_ = 1;
+        private const int TASK_POOL_SIZE_ = 500;
 
         /// <summary>
         /// The flush interval in milliseconds
         /// </summary>
         private long flushInterval_ = 1000;
 
-        private int bulkSize_ = 500;
+        private int bulkLength_ = 500;
 
         /// <summary>
         /// The size of the bulk in bytes.
