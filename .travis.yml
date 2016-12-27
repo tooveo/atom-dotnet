@@ -58,8 +58,8 @@ script:
   - rm ./monocovCoverage/*Atom.xml
   - rm ./monocovCoverage/*Request.xml
   - rm ./monocovCoverage/*Tracker.xml
-  - rm ./monocovCoverage/*TaskPool.xml
-  - rm ./monocovCoverage/*TaskPoolException.xml
+  - rm ./monocovCoverage/*EventPool.xml
+  - rm ./monocovCoverage/*EventPoolException.xml
 
   - ls ./monocovCoverage/
 
