@@ -9,7 +9,7 @@ namespace ironsource {
         public string authKey_;
 
         /// <summary>
-        /// Batch contructor
+        /// Event constructor
         /// </summary>
         /// <param name="stream">
         /// <see cref="string"/> name of stream.
