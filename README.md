@@ -136,14 +136,14 @@ Console.WriteLine("Bulk status: " + responseBulk.status);
 ## Change Log
 
 ### v1.1.0
-- Changed setBulkSize to setBulkLength
+- Changed SetBulkSize to SetBulkLength
 - Fixed a bug in tracker that caused several conditions to flush at the same time
 - Added example with static usage of the SDK
 - Changed tracker defaults
 - Changed the name of QueueEventManager to QueueEventStorage
 - Changed the name of EventTaskPool to BatchEventPool
 - Renamed eventWorker to trackerHandler
-- Renamed  GetRequestData function to createRequestData
+- Renamed GetRequestData function to CreateRequestData
 - Renamed EventManager interface to EventStorage
 
 ### v1.0.0

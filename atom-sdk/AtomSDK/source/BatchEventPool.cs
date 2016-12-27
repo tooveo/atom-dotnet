@@ -5,25 +5,25 @@ using System.Threading;
 using System.Diagnostics;
 
 namespace ironsource {
-    public class EventTaskPoolException : Exception {
+    public class BatchEventPoolException : Exception {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// Initializes a new instance of the <see cref="BatchEventPoolException"/>
         /// </summary>
-        public EventTaskPoolException() {
+        public BatchEventPoolException() {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// Initializes a new instance of the <see cref="BatchEventPoolException"/>
         /// </summary>
         /// <param name="message">
         /// <see cref="string"/> error message
         /// </param>
-        public EventTaskPoolException(string message) 
+        public BatchEventPoolException(string message) 
             : base(message) {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// Initializes a new instance of the <see cref="BatchEventPoolException"/>
         /// </summary>
         /// <param name="message">
         /// <see cref="string"/> error message
@@ -31,13 +31,13 @@ namespace ironsource {
         /// <param name="inner">
         /// <see cref="Exception"/> inner exception
         /// </param>
-        public EventTaskPoolException(string message, Exception inner) 
+        public BatchEventPoolException(string message, Exception inner) 
             : base(message, inner) {
         }
     }
 
 
-    public class EventTaskPool {
+    public class BatchEventPool {
         private ConcurrentQueue<Action> events_;
         private bool isRunning_;
 
@@ -46,7 +46,7 @@ namespace ironsource {
         private int maxEvents_;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ironsource.EventTaskPool"/> class.
+        /// Initializes a new instance of the <see cref="ironsource.BatchEventPool"/> class.
         /// </summary>
         /// <param name="maxThreads">
         /// <see cref="int"/> max thread for event pool
@@ -54,7 +54,7 @@ namespace ironsource {
         /// <param name="maxEvents">
         /// <see cref="int"/> max events for event pool
         /// </param>
-        public EventTaskPool(int maxThreads, int maxEvents) {
+        public BatchEventPool(int maxThreads, int maxEvents) {
             maxEvents_ = maxEvents;
             events_ = new ConcurrentQueue<Action>();
             isRunning_ = true;
@@ -104,7 +104,7 @@ namespace ironsource {
         /// </param>
         public void addEvent(Action eventAction) {
             if (events_.Count > maxEvents_) {
-                throw new EventTaskPoolException("Exceeded max event count in Event Task Pool!");
+                throw new BatchEventPoolException("Exceeded max event count in Event Task Pool!");
             }
             events_.Enqueue(eventAction);
         }

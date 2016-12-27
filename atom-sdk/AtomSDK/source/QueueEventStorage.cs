@@ -7,13 +7,13 @@ namespace ironsource {
     /// <summary>
     /// Queue event manager.
     /// </summary>
-    public class QueueEventManager: IEventManager {
+    public class QueueEventStorage: IEventStorage {
         private ConcurrentDictionary<string, ConcurrentQueue<Event>> events_;
 
         /// <summary>
         /// Initializes a new instance of the QueueEventManager
         /// </summary>
-        public QueueEventManager() {
+        public QueueEventStorage() {
             events_ = new ConcurrentDictionary<string, ConcurrentQueue<Event>>();
         }
 
@@ -23,7 +23,7 @@ namespace ironsource {
         /// <param name="eventObject">
         /// <see cref="Event"/> event for adding to storage
         /// </param>
-        void IEventManager.addEvent(Event eventObject) {   
+        void IEventStorage.addEvent(Event eventObject) {   
             if (!events_.ContainsKey(eventObject.stream_)) {
                 events_.TryAdd(eventObject.stream_, new ConcurrentQueue<Event>());
             }
@@ -40,7 +40,7 @@ namespace ironsource {
         /// <param name="stream">
         /// <see cref="string"/> stream name
         /// </param>
-        Event IEventManager.getEvent(string stream) {
+        Event IEventStorage.getEvent(string stream) {
             Event eventObject = null;
             if (events_.ContainsKey(stream)) {
                 events_[stream].TryDequeue(out eventObject);

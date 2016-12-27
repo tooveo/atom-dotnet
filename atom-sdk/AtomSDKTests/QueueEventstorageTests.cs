@@ -4,23 +4,23 @@ using System;
 namespace ironsource {
     namespace test {        
         [TestFixture()]
-        public class QueueEventManager_Tests {
+        public class QueueEventStorage_Tests {
             [Test()]
             public void Constructor_Test() {  
-                IEventManager eventManager = new QueueEventManager();
+                IEventStorage eventStorage = new QueueEventStorage();
 
-                Assert.AreEqual(eventManager.getEvent(""), null);
+                Assert.AreEqual(eventStorage.getEvent(""), null);
             }   
 
             [Test()]
             public void AddEvent_Test() {  
-                IEventManager eventManager = new QueueEventManager();
+                IEventStorage eventStorage = new QueueEventStorage ();
                 string streamName = "test stream";
 
                 Event expectedEvent = new Event(streamName, "test data", "test auth");
-                eventManager.addEvent(expectedEvent);
+                eventStorage.addEvent(expectedEvent);
 
-                Event resultEvent = eventManager.getEvent(streamName);
+                Event resultEvent = eventStorage.getEvent(streamName);
 
                 Assert.AreEqual(expectedEvent.stream_, resultEvent.stream_);
                 Assert.AreEqual(expectedEvent.data_, resultEvent.data_);

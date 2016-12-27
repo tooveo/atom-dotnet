@@ -4,7 +4,7 @@ namespace ironsource {
     /// <summary>
     /// Interface for store data
     /// </summary>
-    public interface IEventManager {
+    public interface IEventStorage {
         /// <summary>
         /// Adds the event.
         /// </summary>

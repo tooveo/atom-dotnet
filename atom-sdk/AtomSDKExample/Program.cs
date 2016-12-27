@@ -8,8 +8,8 @@ using ironsource;
 
 namespace AtomSDKExample {
 	class MainClass	{
-        static String stream = "sdkdev_sdkdev.public.g8y3etest";
-        static String authKey = "I40iwPPOsG3dfWX30labriCg9HqMfL";
+        static String stream = "ibtest";
+        static String authKey = "";
 
        // static IronSourceAtom atom_;
         static IronSourceAtomTracker atomTracker_ = new IronSourceAtomTracker();
@@ -22,7 +22,7 @@ namespace AtomSDKExample {
         public static void testMultiThread() {
             atomTracker_.EnableDebug(true);
             atomTracker_.SetAuth(authKey);
-            atomTracker_.SetBulkSize(2);
+            atomTracker_.SetBulkLenght(2);
             atomTracker_.SetBulkBytesSize(2048);
             atomTracker_.SetFlushInterval(2000);
 

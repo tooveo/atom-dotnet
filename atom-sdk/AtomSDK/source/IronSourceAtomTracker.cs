@@ -11,19 +11,19 @@ namespace ironsource {
     /// </summary>
     public class IronSourceAtomTracker {
         private const int TASK_WORKERS_COUNT_ = 1;
-        private const int TASK_POOL_SIZE_ = 500;
+        private const int TASK_POOL_SIZE_ = 10;
 
         /// <summary>
         /// The flush interval in milliseconds
         /// </summary>
-        private long flushInterval_ = 1000;
+        private long flushInterval_ = 30000;
 
         private int bulkLength_ = 500;
 
         /// <summary>
         /// The size of the bulk in bytes.
         /// </summary>
-        private int bulkBytesSize_ = 64 * 1024;
+        private int bulkBytesSize_ = 512 * 1024;
 
         // Jitter time
         private double minTime_ = 1;
@@ -36,12 +36,12 @@ namespace ironsource {
 
 
         private bool isRunWorker_ = true;
-        private Thread eventWorkerThread_;
+        private Thread trackerHandlerThread_;
 
         private ConcurrentDictionary<string, string> streamData_;
 
-        private IEventManager eventManager_;
-        private EventTaskPool eventPool_;
+        private IEventStorage eventStorage_;
+        private BatchEventPool eventPool_;
         private Random random_;
 
         /// <summary>
@@ -55,16 +55,16 @@ namespace ironsource {
         /// </param>
         public IronSourceAtomTracker(int taskWorkersCount=TASK_WORKERS_COUNT_, int taskPoolSize=TASK_POOL_SIZE_) {
             api_ = new IronSourceAtom();
-            eventPool_ = new EventTaskPool(taskWorkersCount, taskPoolSize);
+            eventPool_ = new BatchEventPool(taskWorkersCount, taskPoolSize);
 
-            eventManager_ = new QueueEventManager();
+            eventStorage_ = new QueueEventStorage();
             streamData_ = new ConcurrentDictionary<string, string>();
 
             random_ = new Random();
 
             ThreadStart threadMethodHolder = new ThreadStart(this.EventWorker);
-            eventWorkerThread_ = new Thread(threadMethodHolder);
-            eventWorkerThread_.Start();
+            trackerHandlerThread_ = new Thread(threadMethodHolder);
+            trackerHandlerThread_.Start();
         }
 
         /// <summary>
@@ -78,9 +78,9 @@ namespace ironsource {
         /// <summary>
         /// Sets the event manager.
         /// </summary>
-        /// <param name="eventManager">Event manager.</param>
-        public void SetEventManager(IEventManager eventManager) {
-            eventManager_ = eventManager;
+        /// <param name="eventStorage">Event storage.</param>
+        public void SetEventStorage(IEventStorage eventStorage) {
+            eventStorage_ = eventStorage;
         }
 
         /// <summary>
@@ -118,11 +118,11 @@ namespace ironsource {
         /// <summary>
         /// Set Bulk data count
         /// </summary>
-        /// <param name="bulkSize">
+        /// <param name="bulkLength">
         /// <see cref="int"/> Count of event for flush
         /// </param>
-        public void SetBulkSize(int bulkSize) {
-            bulkSize_ = bulkSize;
+        public void SetBulkLenght(int bulkLength) {
+            bulkLength_ = bulkLength;
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace ironsource {
                 streamData_.TryAdd(stream, authKey);
             }
 
-            eventManager_.addEvent(new Event(stream, data, authKey));           
+            eventStorage_.addEvent(new Event(stream, data, authKey));           
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace ironsource {
                         }
                     }
 
-                    Event eventObject = eventManager_.getEvent(streamName);
+                    Event eventObject = eventStorage_.getEvent(streamName);
                     if (eventObject == null) {
                         Thread.Sleep(25);
                         continue;
@@ -261,7 +261,7 @@ namespace ironsource {
                         flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
                     } else if (eventsSize[streamName] >= bulkBytesSize_) {
                         flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
-                    } else if (eventsBuffer[streamName].Count >= bulkSize_) {
+                    } else if (eventsBuffer[streamName].Count >= bulkLength_) {
                         flushEvent(streamName, streamData_[streamName], eventsBuffer[streamName]);
                     }
                 }
