@@ -9,16 +9,24 @@ atom-dotnet is the official [ironSource.atom](http://www.ironsrc.com/data-flow-m
 
 - [Signup](https://atom.ironsrc.com/#/signup)
 - [Documentation](https://ironsource.github.io/atom-dotnet/)
-- [Sending an event](#Using-the-IronSource-API-to-send-events)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Change Log](#change-log)
+- [Example](#example)
 
 ## Installation
 
-Add dependency for Atom SDK dll from folder [dist](dist/), in Xamarin project:
-- add Reference in project References
+Add dependency for Atom SDK dll from [dist folder](dist/).
 
-#### Using the IronSource API to send events 
-##### Tracker usage
-Example of track an event in C#:
+## Usage
+ 
+### High Level API - "Tracker"
+The tracker is used for sending events to Atom based on several conditions
+- Every 30 seconds (default)
+- Number of accumulated events has reached 200 (default)
+- Size of accumulated events has reached 512KB (default)
+
+To see the full code check the [example section](#example)
 ```csharp
 IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 // print debug info in console
