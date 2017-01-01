@@ -9,12 +9,44 @@ atom-dotnet is the official [ironSource.atom](http://www.ironsrc.com/data-flow-m
 
 - [Signup](https://atom.ironsrc.com/#/signup)
 - [Documentation](https://ironsource.github.io/atom-dotnet/)
-- [Sending an event](#Using-the-IronSource-API-to-send-events)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Change Log](#change-log)
+- [Example](#example)
 
-#### Using the IronSource API to send events 
-##### Tracker usage
-Example of track an event in C#:
+## Installation
+
+Add dependency for Atom SDK DLL from [dist folder](dist/).
+
+## Usage
+ 
+### High Level SDK - "Tracker"
+The Tracker is used for sending events to Atom based on several conditions:
+- Every 30 seconds (default)
+- Number of accumulated events has reached 200 (default)
+- Size of accumulated events has reached 512KB (default)
+Case of server side failure (500) the tracker uses an exponential back off mechanism with jitter.
+
+The tracker is a based on a thread pool which is controlled by BatchEventPool and a backlog (QueueEventStorage)    
+By default the BatchEventPool is configured to use 1 thread (worker), you can change it when constructing the tracker.
+To see the full code check the [example section](#example)
+
 ```csharp
+
+// Tracker defaults:
+
+private const int BATCH_WORKERS_COUNT_ = 1;
+private const int BATCH_POOL_SIZE_ = 10;
+
+// The flush interval in milliseconds
+private long flushInterval_ = 30000;
+
+// Bulk length (number of events)
+private int bulkLength_ = 200;
+
+// The size of the bulk in bytes.
+private int bulkBytesSize_ = 512 * 1024;
+
 IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 // print debug info in console
 tracker.EnableDebug(true);
@@ -35,13 +67,14 @@ tracker.track("<YOUR_STREAM_NAME>", data, "<YOUR_AUTH_KEY>");
 tracker.Stop();
 ```
 
-Interface for store data `IEventManager`.
-Implementation must to be synchronized for multithreading use.
+### Interface for storing data at the tracker backlog `IEventStorage`
+
+Implementation must to be synchronized for multi threading use.
 ```csharp
 using System;
 
 namespace ironsource {
-    public interface IEventManager {
+    public interface IEventStorage {
         // Save event data to your storage (RAM, SQLite, File etc.)
         void addEvent(Event eventObject);
 
@@ -54,11 +87,12 @@ Using custom storage implementation:
 ```csharp
 IronSourceAtomTracker tracker = new IronSourceAtomTracker();
 
-IEventManager customEventManager = new QueueEventManager();
-tracker.SetEventManager(customEventManager);
+// Class CustomStorageStorage must implement interface IEventStorage and must be synchronized
+IEventStorage customEventStorage = new CustomStorageStorage();
+tracker.SetEventStorage(customEventStorage);
 ```
 
-##### Low level API usage
+### Low Level (Basic) SDK
 Example of sending an event in C#:
 ```csharp
 IronSourceAtom api = new IronSourceAtom();
@@ -101,8 +135,29 @@ Console.WriteLine("Bulk data: " + responseBulk.data);
 Console.WriteLine("Bulk error: " + responseBulk.error);
 Console.WriteLine("Bulk status: " + responseBulk.status);
 ```
+## Change Log
 
-### License
+### v1.1.0
+- Changed SetBulkSize to SetBulkLength
+- Fixed a bug in tracker that caused several conditions to flush at the same time
+- Added example with static usage of the SDK
+- Changed the name of QueueEventManager to QueueEventStorage
+- Changed the name of EventTaskPool to BatchEventPool
+- Changed BatchEventPool defaults
+- Renamed eventWorker to trackerHandler
+- Renamed GetRequestData function to CreateRequestData
+- Renamed EventManager interface to EventStorage
+
+### v1.0.0
+- Tracker
+- Low level methods
+- Storage interface
+
+
+## Example
+Full example of all SDK features (both static class and regular) can be found [here](atom-sdk/atom-sdk/AtomSDKExample/)
+
+## License
 [MIT](LICENSE)
 
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square

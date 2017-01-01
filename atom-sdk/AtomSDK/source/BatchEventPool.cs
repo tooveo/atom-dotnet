@@ -5,25 +5,25 @@ using System.Threading;
 using System.Diagnostics;
 
 namespace ironsource {
-    public class EventTaskPoolException : Exception {
+    public class BatchEventPoolException : Exception {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// Initializes a new instance of the <see cref="BatchEventPoolException"/>
         /// </summary>
-        public EventTaskPoolException() {
+        public BatchEventPoolException() {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// Initializes a new instance of the <see cref="BatchEventPoolException"/>
         /// </summary>
         /// <param name="message">
         /// <see cref="string"/> error message
         /// </param>
-        public EventTaskPoolException(string message) 
+        public BatchEventPoolException(string message) 
             : base(message) {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventTaskPoolException"/>
+        /// Initializes a new instance of the <see cref="BatchEventPoolException"/>
         /// </summary>
         /// <param name="message">
         /// <see cref="string"/> error message
@@ -31,13 +31,16 @@ namespace ironsource {
         /// <param name="inner">
         /// <see cref="Exception"/> inner exception
         /// </param>
-        public EventTaskPoolException(string message, Exception inner) 
+        public BatchEventPoolException(string message, Exception inner) 
             : base(message, inner) {
         }
     }
 
-
-    public class EventTaskPool {
+    /// <summary>
+    /// Handles concurrent event sending
+    /// Handles the backlog of BatchEvents
+    /// </summary>
+    public class BatchEventPool {
         private ConcurrentQueue<Action> events_;
         private bool isRunning_;
 
@@ -46,7 +49,7 @@ namespace ironsource {
         private int maxEvents_;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ironsource.EventTaskPool"/> class.
+        /// Initializes a new instance of the <see cref="ironsource.BatchEventPool"/> class.
         /// </summary>
         /// <param name="maxThreads">
         /// <see cref="int"/> max thread for event pool
@@ -54,13 +57,13 @@ namespace ironsource {
         /// <param name="maxEvents">
         /// <see cref="int"/> max events for event pool
         /// </param>
-        public EventTaskPool(int maxThreads, int maxEvents) {
+        public BatchEventPool(int maxThreads, int maxEvents) {
             maxEvents_ = maxEvents;
             events_ = new ConcurrentQueue<Action>();
             isRunning_ = true;
 
             workers_ = new List<Thread>();
-            ThreadStart threadMethodHolder = new ThreadStart(this.TaskWorker);
+            ThreadStart threadMethodHolder = new ThreadStart(this.BatchWorkerTask);
 
             for (int index = 0; index < maxThreads; ++index) {
                 Thread workerThread = new Thread(threadMethodHolder);
@@ -82,9 +85,10 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Tasks the worker.
+        /// Batch worker task function - each worker (thread) is polling the Queue for a batch event 
+        /// and handles the sending of the data
         /// </summary>
-        private void TaskWorker() {
+        private void BatchWorkerTask() {
             while (isRunning_) {
                 Action eventAction;
                 if (!events_.TryDequeue(out eventAction)) {
@@ -97,16 +101,16 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Adds the event.
+        /// Add batchEvent to pool
         /// </summary>
-        /// <param name="eventAction">
+        /// <param name="batchEvent">
         /// <see cref="Action"/> event callback action
         /// </param>
-        public void addEvent(Action eventAction) {
+        public void addEvent(Action batchEvent) {
             if (events_.Count > maxEvents_) {
-                throw new EventTaskPoolException("Exceeded max event count in Event Task Pool!");
+                throw new BatchEventPoolException("Exceeded max event count in Batch Event Pool!");
             }
-            events_.Enqueue(eventAction);
+            events_.Enqueue(batchEvent);
         }
     }
 }

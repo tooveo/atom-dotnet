@@ -35,7 +35,7 @@ script:
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDK/atom_sdk.sln
   - xbuild /p:Configuration=Release  ./atom-sdk/AtomSDKTests/AtomSDKTests.sln
  
-  - cp ./atom-sdk/AtomSDK/AtomSDK/Temp/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
+  - cp ./atom-sdk/AtomSDK/AtomSDK/bin/Release/AtomSDK.dll.mdb ./atom-sdk/AtomSDKTests/bin/Release/
  
   - mono --profile=monocov:outfile=monocovCoverage.cov,+AtomSDK,-AtomSDKTests ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./atom-sdk/AtomSDKTests/bin/Release/AtomSDKTests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
@@ -58,8 +58,8 @@ script:
   - rm ./monocovCoverage/*Atom.xml
   - rm ./monocovCoverage/*Request.xml
   - rm ./monocovCoverage/*Tracker.xml
-  - rm ./monocovCoverage/*TaskPool.xml
-  - rm ./monocovCoverage/*TaskPoolException.xml
+  - rm ./monocovCoverage/*EventPool.xml
+  - rm ./monocovCoverage/*EventPoolException.xml
 
   - ls ./monocovCoverage/
 

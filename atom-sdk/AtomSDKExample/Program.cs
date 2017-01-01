@@ -8,32 +8,81 @@ using ironsource;
 
 namespace AtomSDKExample {
 	class MainClass	{
+        static String stream = "ibtest";
+        static String authKey = "";
+
+       // static IronSourceAtom atom_;
+        static IronSourceAtomTracker atomTracker_ = new IronSourceAtomTracker();
+
+
 		public static void Main(string[] args) {
-			IronSourceAtom api = new IronSourceAtom();
-			api.EnableDebug (true);
+            testMultiThread();
+            //test1();
+		}
 
-			IronSourceAtomTracker tracker = new IronSourceAtomTracker();
-			tracker.EnableDebug(true);
-			// set event pool size and worker threads count
-			tracker.SetTaskPoolSize(1000);
-            tracker.SetTaskWorkersCount(24);
+        public static void testMultiThread() {
+            atomTracker_.EnableDebug(true);
+            atomTracker_.SetAuth(authKey);
+            atomTracker_.SetBulkLength(40);
+            atomTracker_.SetBulkBytesSize(1024*40);
+            atomTracker_.SetFlushInterval(2000);
 
-			// test for bulk size
-			//tracker.SetBulkBytesSize(2);
-			tracker.SetFlushInterval(3000);
-			tracker.SetEndpoint("http://track.atom-data.io/");
+            LinkedList<Thread> threads = new LinkedList<Thread>();
+            Random randomGen = new Random();
 
-			int index = 0;
+            for (int i = 0; i < 10; ++i) {
+                int threadID = 40 + i;
+                Action eventSend = delegate () {
+                    Thread.Sleep(randomGen.Next(1000, 6000));
 
-			int eventSended = 0;
-			bool isRunThreads = true;
-			for (int i = 0; i < 10; ++i) {
-				Action eventSend = delegate() {
+                    Console.WriteLine("From thread: " + threadID);
+                    for (int j = 0; j < 6; ++j) {
+                        string data = "{\"strings\": \"c# thread : " + threadID +
+                            " req: " + j + "\", \"id\": " + threadID + "}";
+
+                        atomTracker_.Track(stream, data);
+                    }
+                };
+
+                ThreadStart threadMethodHolder = new ThreadStart(eventSend);
+                Thread thread = new Thread(threadMethodHolder);
+
+                thread.Start();
+                threads.AddLast(thread);
+            }
+
+            foreach (Thread thread in threads) {
+                thread.Join();
+            }
+
+            Thread.Sleep(30000);
+            atomTracker_.Flush();
+            atomTracker_.Stop();
+        }
+
+        public static void test1() {
+            IronSourceAtom api = new IronSourceAtom();
+            api.EnableDebug(true);
+
+            IronSourceAtomTracker tracker = new IronSourceAtomTracker();
+            tracker.EnableDebug(true);
+
+            // test for bulk size
+            //tracker.SetBulkBytesSize(2);
+            tracker.SetFlushInterval(3000);
+            tracker.SetEndpoint("http://track.atom-data.io/");
+
+            int index = 0;
+
+            int eventSended = 0;
+            bool isRunThreads = true;
+            for (int i = 0; i < 10; ++i) {
+                Action eventSend = delegate () {
                     int threadIndex = i;
 
-					while (isRunThreads) {
-						string data = "{\"strings\": \"+++++ d: " + Interlocked.Increment(ref index) + 
-						" t: " + threadIndex + "\"}";
+                    while (isRunThreads) {
+                        string data = "{\"strings\": \"+++++ d: " + Interlocked.Increment(ref index) +
+                        " t: " + threadIndex + "\"}";
 
                         if (threadIndex < 5) {
                             tracker.Track("ibtest", data, "");
@@ -42,56 +91,56 @@ namespace AtomSDKExample {
                             tracker.Track("ibtest2", data, "");
                         }
 
-						if (Interlocked.Increment(ref eventSended) >= 33) {
-							isRunThreads = false;
-						}
-					}
-				};
+                        if (Interlocked.Increment(ref eventSended) >= 33) {
+                            isRunThreads = false;
+                        }
+                    }
+                };
 
-				ThreadStart threadMethodHolder = new ThreadStart(eventSend);
-				Thread thread = new Thread(threadMethodHolder);
+                ThreadStart threadMethodHolder = new ThreadStart(eventSend);
+                Thread thread = new Thread(threadMethodHolder);
 
-				thread.Start();
-			}
+                thread.Start();
+            }
 
-			Thread.Sleep(30000);
-			tracker.Stop();
+            Thread.Sleep(30000);
+            tracker.Stop();
 
-			// example put event "GET"
-			string streamGet = "ibtest";
-			string dataGet = "{\"strings\": \"data GET\"}";
+            // example put event "GET"
+            string streamGet = "ibtest";
+            string dataGet = "{\"strings\": \"data GET\"}";
 
-			Response responseGet = api.PutEvent(streamGet, dataGet, HttpMethod.GET, "");
+            Response responseGet = api.PutEvent(streamGet, dataGet, HttpMethod.GET, "");
 
-			Console.WriteLine("GET data: " + responseGet.data);
-			Console.WriteLine("GET error: " + responseGet.error);
-			Console.WriteLine("GET status: " + responseGet.status);
+            Console.WriteLine("GET data: " + responseGet.data);
+            Console.WriteLine("GET error: " + responseGet.error);
+            Console.WriteLine("GET status: " + responseGet.status);
 
-			// example put event "POST"
-			string streamPost = "ibtest";
-			string dataPost = "{\"strings\": \"data POST\"}";
+            // example put event "POST"
+            string streamPost = "ibtest";
+            string dataPost = "{\"strings\": \"data POST\"}";
 
-			//api.SetAuth("I40iwPPOsG3dfWX30labriCg9HqMfL");
-			Response responsePost = api.PutEvent(streamPost, dataPost);
+            //api.SetAuth("I40iwPPOsG3dfWX30labriCg9HqMfL");
+            Response responsePost = api.PutEvent(streamPost, dataPost);
 
-			Console.WriteLine("POST data: " + responsePost.data);
-			Console.WriteLine("POST error: " + responsePost.error);
-			Console.WriteLine("POST status: " + responsePost.status);
+            Console.WriteLine("POST data: " + responsePost.data);
+            Console.WriteLine("POST error: " + responsePost.error);
+            Console.WriteLine("POST status: " + responsePost.status);
 
-			// example put events - bulk
-			string streamBulk = "ibtest";
-			List<String> dataBulk = new List<string>(); 
-			dataBulk.Add("{\"strings\": \"test BULK 1\"}");
-			dataBulk.Add("{\"strings\": \"test BULK 2\"}");
-			dataBulk.Add("{\"strings\": \"test BULK 3\"}");
+            // example put events - bulk
+            string streamBulk = "ibtest";
+            List<String> dataBulk = new List<string>();
+            dataBulk.Add("{\"strings\": \"test BULK 1\"}");
+            dataBulk.Add("{\"strings\": \"test BULK 2\"}");
+            dataBulk.Add("{\"strings\": \"test BULK 3\"}");
 
-			Response responseBulk = api.PutEvents(streamBulk, dataBulk);
+            Response responseBulk = api.PutEvents(streamBulk, dataBulk);
 
-			Console.WriteLine("Bulk data: " + responseBulk.data);
-			Console.WriteLine("Bulk error: " + responseBulk.error);
-			Console.WriteLine("Bulk status: " + responseBulk.status);
+            Console.WriteLine("Bulk data: " + responseBulk.data);
+            Console.WriteLine("Bulk error: " + responseBulk.error);
+            Console.WriteLine("Bulk status: " + responseBulk.status);
 
-			Console.WriteLine("End of the example!;");
-		}
+            Console.WriteLine("End of the example!;");
+        }
 	}
 }

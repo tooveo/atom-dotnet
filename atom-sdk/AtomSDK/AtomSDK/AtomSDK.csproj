@@ -10,6 +10,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,9 +24,10 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>Temp\bin\Release\</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -51,18 +54,19 @@
     <Compile Include="..\source\Event.cs">
       <Link>Event.cs</Link>
     </Compile>
-    <Compile Include="..\source\EventTaskPool.cs">
-      <Link>EventTaskPool.cs</Link>
+    <Compile Include="..\source\BatchEventPool.cs">
+      <Link>BatchEventPool.cs</Link>
     </Compile>
     <Compile Include="..\source\IronSourceAtomTracker.cs">
       <Link>IronSourceAtomTracker.cs</Link>
     </Compile>
-    <Compile Include="..\source\IEventManager.cs">
-      <Link>IEventManager.cs</Link>
+    <Compile Include="..\source\IEventStorage.cs">
+      <Link>IEventStorage.cs</Link>
     </Compile>
-    <Compile Include="..\source\QueueEventManager.cs">
-      <Link>QueueEventManager.cs</Link>
+    <Compile Include="..\source\QueueEventStorage.cs">
+      <Link>QueueEventStorage.cs</Link>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

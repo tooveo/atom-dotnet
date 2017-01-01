@@ -6,8 +6,11 @@ using System.Text;
 using System.Diagnostics;
 
 namespace ironsource {
+    /// <summary>
+    /// Atom low level (basic) SDK. supports putEvent() and putEvents() methods.
+    /// </summary>
     public class IronSourceAtom {
-        protected static string API_VERSION_ = "V1.0.0";
+        protected static string API_VERSION_ = "V1.1.0";
 
         protected string endpoint_ = "http://track.atom-data.io/";
         protected string authKey_ = "";
@@ -108,7 +111,7 @@ namespace ironsource {
                 authKey = authKey_;
             }
 
-            string jsonEvent = GetRequestData(stream, data, authKey);
+            string jsonEvent = CreateRequestData(stream, data, authKey);
             return SendEvent(endpoint_, method, headers_, jsonEvent);
         }
 
@@ -138,7 +141,7 @@ namespace ironsource {
             HttpMethod method = HttpMethod.POST;
             PrintLog("Key: " + authKey_);
 
-            string jsonEvent = GetRequestData(stream, data, authKey);
+            string jsonEvent = CreateRequestData(stream, data, authKey);
 
             return SendEvent(endpoint_ + "bulk", method, headers_, jsonEvent);
         }
@@ -153,7 +156,7 @@ namespace ironsource {
         /// <param name="data">
         /// <see cref="string"/> for request data
         /// </param>
-        protected string GetRequestData(string stream, string data, string authKey) {
+        protected string CreateRequestData(string stream, string data, string authKey) {
             string hash = Utils.EncodeHmac(data, Encoding.ASCII.GetBytes(authKey));
 
             var eventObject = new Dictionary<string, string>();
