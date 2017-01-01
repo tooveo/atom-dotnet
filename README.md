@@ -24,7 +24,7 @@ Add dependency for Atom SDK DLL from [dist folder](dist/).
 The Tracker is used for sending events to Atom based on several conditions:
 - Every 30 seconds (default)
 - Number of accumulated events has reached 200 (default)
-- Size of accumulated events has reached 512KB (default)
+- Size of accumulated events has reached 512KB (default)  
 Case of server side failure (500) the tracker uses an exponential back off mechanism with jitter.
 
 The tracker is a based on a thread pool which is controlled by BatchEventPool and a backlog (QueueEventStorage)    
@@ -47,24 +47,62 @@ private int bulkLength_ = 200;
 // The size of the bulk in bytes.
 private int bulkBytesSize_ = 512 * 1024;
 
-IronSourceAtomTracker tracker = new IronSourceAtomTracker();
-// print debug info in console
-tracker.EnableDebug(true);
+class MainClass	{
+    static String stream = "YOUR STREAM NAME";
+    static String authKey = "YOUR PRE-SHARED KEY";
+    
+    // static IronSourceAtom atom_;
+    private const int BATCH_WORKERS_COUNT_ = 1;
+    private const int BATCH_POOL_SIZE_ = 10;
+    // Worker count and pool size are optional
+    static IronSourceAtomTracker atomTracker_ = new IronSourceAtomTracker(BATCH_WORKERS_COUNT_, BATCH_POOL_SIZE_);
 
-tracker.SetBulkBytesSize(2);
-tracker.SetFlushInterval(2000);
-tracker.SetEndpoint("http://track.atom-data.io/");
+    public static void Main(string[] args) {
+        testMultiThread();
+        //test1();
+    }
 
-// set event pool size and worker threads count
-tracker.SetTaskPoolSize(1000);
-tracker.SetTaskWorkersCount(24);
+    public static void testMultiThread() {
+        atomTracker_.EnableDebug(true);
+        atomTracker_.SetAuth(authKey);
+        atomTracker_.SetBulkLength(40);
+        atomTracker_.SetBulkBytesSize(1024*40);
+        atomTracker_.SetFlushInterval(2000);
 
-string data = "{\"strings\": \"data track\"}";
+        LinkedList<Thread> threads = new LinkedList<Thread>();
+        Random randomGen = new Random();
 
-tracker.track("<YOUR_STREAM_NAME>", data, "<YOUR_AUTH_KEY>");
+        for (int i = 0; i < 10; ++i) {
+            int threadID = 40 + i;
+            Action eventSend = delegate () {
+                Thread.Sleep(randomGen.Next(1000, 6000));
 
-// stop all tracker workers
-tracker.Stop();
+                Console.WriteLine("From thread: " + threadID);
+                for (int j = 0; j < 6; ++j) {
+                    string data = "{\"strings\": \"c# thread : " + threadID +
+                        " req: " + j + "\", \"id\": " + threadID + "}";
+
+                    atomTracker_.Track(stream, data);
+                }
+            };
+
+            ThreadStart threadMethodHolder = new ThreadStart(eventSend);
+            Thread thread = new Thread(threadMethodHolder);
+
+            thread.Start();
+            threads.AddLast(thread);
+        }
+
+        foreach (Thread thread in threads) {
+            thread.Join();
+        }
+
+        Thread.Sleep(30000);
+        atomTracker_.Flush();
+        atomTracker_.Stop();
+    }
+}
+
 ```
 
 ### Interface for storing data at the tracker backlog `IEventStorage`
