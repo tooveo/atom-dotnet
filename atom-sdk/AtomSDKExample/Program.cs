@@ -17,13 +17,14 @@ namespace AtomSDKExample {
 
 		public static void Main(string[] args) {
             testMultiThread();
+            //test1();
 		}
 
         public static void testMultiThread() {
             atomTracker_.EnableDebug(true);
             atomTracker_.SetAuth(authKey);
-            atomTracker_.SetBulkLenght(2);
-            atomTracker_.SetBulkBytesSize(2048);
+            atomTracker_.SetBulkLength(40);
+            atomTracker_.SetBulkBytesSize(1024*40);
             atomTracker_.SetFlushInterval(2000);
 
             LinkedList<Thread> threads = new LinkedList<Thread>();
@@ -50,12 +51,13 @@ namespace AtomSDKExample {
                 threads.AddLast(thread);
             }
 
-            Thread.Sleep(10000);
             foreach (Thread thread in threads) {
                 thread.Join();
             }
 
+            Thread.Sleep(30000);
             atomTracker_.Flush();
+            atomTracker_.Stop();
         }
 
         public static void test1() {
