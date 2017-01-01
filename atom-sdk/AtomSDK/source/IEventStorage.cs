@@ -2,17 +2,17 @@
 
 namespace ironsource {
     /// <summary>
-    /// Interface for store data
+    /// Interface for providing a generic way of storing events in a backlog before they are sent to Atom.
     /// </summary>
     public interface IEventStorage {
         /// <summary>
-        /// Adds the event.
+        /// Add an event.
         /// </summary>
         /// <param name="eventObject">Event object.</param>
         void addEvent(Event eventObject);
 
         /// <summary>
-        /// Get one the event from store.
+        /// Get one event from data store
         /// </summary>
         /// <returns>
         /// <see cref="Event"/> The event.

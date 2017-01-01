@@ -36,7 +36,10 @@ namespace ironsource {
         }
     }
 
-
+    /// <summary>
+    /// Handles concurrent event sending
+    /// Handles the backlog of BatchEvents
+    /// </summary>
     public class BatchEventPool {
         private ConcurrentQueue<Action> events_;
         private bool isRunning_;
@@ -60,7 +63,7 @@ namespace ironsource {
             isRunning_ = true;
 
             workers_ = new List<Thread>();
-            ThreadStart threadMethodHolder = new ThreadStart(this.TaskWorker);
+            ThreadStart threadMethodHolder = new ThreadStart(this.BatchWorkerTask);
 
             for (int index = 0; index < maxThreads; ++index) {
                 Thread workerThread = new Thread(threadMethodHolder);
@@ -82,9 +85,10 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Tasks the worker.
+        /// Batch worker task function - each worker (thread) is polling the Queue for a batch event 
+        /// and handles the sending of the data
         /// </summary>
-        private void TaskWorker() {
+        private void BatchWorkerTask() {
             while (isRunning_) {
                 Action eventAction;
                 if (!events_.TryDequeue(out eventAction)) {
@@ -97,16 +101,16 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Adds the event.
+        /// Add batchEvent to pool
         /// </summary>
-        /// <param name="eventAction">
+        /// <param name="batchEvent">
         /// <see cref="Action"/> event callback action
         /// </param>
-        public void addEvent(Action eventAction) {
+        public void addEvent(Action batchEvent) {
             if (events_.Count > maxEvents_) {
-                throw new BatchEventPoolException("Exceeded max event count in Event Task Pool!");
+                throw new BatchEventPoolException("Exceeded max event count in Batch Event Pool!");
             }
-            events_.Enqueue(eventAction);
+            events_.Enqueue(batchEvent);
         }
     }
 }

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace ironsource {
     /// <summary>
-    /// Queue event manager.
+    /// Queue event storage (in memory queue that implements Interface Event Storage).
     /// </summary>
     public class QueueEventStorage: IEventStorage {
         private ConcurrentDictionary<string, ConcurrentQueue<Event>> events_;
 
         /// <summary>
-        /// Initializes a new instance of the QueueEventManager
+        /// Initializes a new instance of the QueueEventStorage
         /// </summary>
         public QueueEventStorage() {
             events_ = new ConcurrentDictionary<string, ConcurrentQueue<Event>>();

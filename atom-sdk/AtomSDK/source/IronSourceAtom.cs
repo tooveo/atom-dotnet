@@ -6,6 +6,9 @@ using System.Text;
 using System.Diagnostics;
 
 namespace ironsource {
+    /// <summary>
+    /// Atom low level (basic) SDK. supports putEvent() and putEvents() methods.
+    /// </summary>
     public class IronSourceAtom {
         protected static string API_VERSION_ = "V1.1.0";
 

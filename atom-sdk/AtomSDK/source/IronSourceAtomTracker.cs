@@ -10,22 +10,28 @@ namespace ironsource {
     /// Iron source atom tracker.
     /// </summary>
     public class IronSourceAtomTracker {
-        private const int TASK_WORKERS_COUNT_ = 1;
-        private const int TASK_POOL_SIZE_ = 10;
+        /// <summary>
+        /// BatchEventPool conf
+        /// </summary>
+        private const int BATCH_WORKERS_COUNT_ = 1;
+        private const int BATCH_POOL_SIZE_ = 10;
 
         /// <summary>
         /// The flush interval in milliseconds
         /// </summary>
         private long flushInterval_ = 30000;
 
+        /// <summary>
+        /// The max length (number of events for) for each bulk
+        /// </summary>
         private int bulkLength_ = 500;
 
         /// <summary>
-        /// The size of the bulk in bytes.
+        /// The max size of the bulk in bytes.
         /// </summary>
         private int bulkBytesSize_ = 512 * 1024;
 
-        // Jitter time
+        // Backoff conf
         private double minTime_ = 1;
         private double maxTime_ = 10;
 
@@ -47,22 +53,22 @@ namespace ironsource {
         /// <summary>
         /// API Tracker constructor
         /// </summary>
-        /// <param name="taskWorkersCount">
+        /// <param name="batchWorkersCount">
         /// <see cref="int"/> task workers count
         /// </param>
-        /// <param name="taskPoolSize">
+        /// <param name="batchPoolSize">
         /// <see cref="int"/> task pool size
         /// </param>
-        public IronSourceAtomTracker(int taskWorkersCount=TASK_WORKERS_COUNT_, int taskPoolSize=TASK_POOL_SIZE_) {
+        public IronSourceAtomTracker(int batchWorkersCount=BATCH_WORKERS_COUNT_, int batchPoolSize=BATCH_POOL_SIZE_) {
             api_ = new IronSourceAtom();
-            eventPool_ = new BatchEventPool(taskWorkersCount, taskPoolSize);
+            eventPool_ = new BatchEventPool(batchWorkersCount, batchPoolSize);
 
             eventStorage_ = new QueueEventStorage();
             streamData_ = new ConcurrentDictionary<string, string>();
 
             random_ = new Random();
 
-            ThreadStart threadMethodHolder = new ThreadStart(this.EventWorker);
+            ThreadStart threadMethodHolder = new ThreadStart(this.TrackerHandler);
             trackerHandlerThread_ = new Thread(threadMethodHolder);
             trackerHandlerThread_.Start();
         }
@@ -76,7 +82,7 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Sets the event manager.
+        /// Sets the event storage
         /// </summary>
         /// <param name="eventStorage">Event storage.</param>
         public void SetEventStorage(IEventStorage eventStorage) {
@@ -116,12 +122,22 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Set Bulk data count
+        /// Set bulk length (number of events)
         /// </summary>
         /// <param name="bulkLength">
         /// <see cref="int"/> Count of event for flush
         /// </param>
-        public void SetBulkLenght(int bulkLength) {
+        public void SetBulkLength(int bulkLength) {
+            bulkLength_ = bulkLength;
+        }
+
+        /// <summary>
+        /// Set Bulk length (number of events) - here for compatibility reasons
+        /// </summary>
+        /// <param name="bulkLength">
+        /// <see cref="int"/> Count of event for flush
+        /// </param>
+        public void SetBulkSize(int bulkLength) {
             bulkLength_ = bulkLength;
         }
 
@@ -193,15 +209,19 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Events the worker.
+        /// Main tracker handler function, handles the flushing conditions.
+        /// Flushes on the following conditions
+        /// Every 30 seconds(default)
+        /// Number of accumulated events has reached 500 (default)
+        /// Size of accumulated events has reached 512KB(default)
         /// </summary>
-        private void EventWorker() {
+        private void TrackerHandler() {
             Dictionary<string, long> timerStartTime = new Dictionary<string, long>();
             Dictionary<string, long> timerDeltaTime = new Dictionary<string, long>();
 
-            // temporary buffers for hold event data per stream
+            // Temporary buffers for holding event data per stream
             Dictionary<string, List<string>> eventsBuffer = new Dictionary<string, List<string>>();
-            // buffers size storage
+            // Buffer size storage
             Dictionary<string, int> eventsSize = new Dictionary<string, int>();
 
             Action<string, string, List<string>> flushEvent = delegate(string stream, 
@@ -273,7 +293,7 @@ namespace ironsource {
         }
 
         /// <summary>
-        /// Flushs the data.
+        /// Flush the data.
         /// </summary>
         /// <param name="stream">Stream.</param>
         /// <param name="authKey">Auth key.</param>
